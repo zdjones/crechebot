@@ -11,350 +11,410 @@ import (
 	"net/url"
 	"os"
 	"strings"
-	"time"
+
+	"github.com/PuerkitoBio/goquery"
 
 	"golang.org/x/net/html"
 	"golang.org/x/net/publicsuffix"
 )
 
-// Shorthand http methods
-const (
-	GET  = http.MethodGet
-	POST = http.MethodPost
-)
-
-type step struct {
-	url       *url.URL
-	rawurl    string
-	method    string
-	retries   int
-	query     map[string]string
-	values    url.Values
-	rawvalues map[string]string
-	before    func(*http.Client, map[string]string)
-	after     func(*http.Client, *http.Response, map[string]string)
-	next      string
+type client struct {
+	*http.Client
 }
 
-var steps = map[string]*step{}
-var share = map[string]string{}
+var maxRetries = 10
 
 func main() {
 	if len(os.Args) < 3 {
 		log.Fatalln("Not enough arguments (eg email and pass): ", os.Args)
 	}
+	user := os.Args[1]
+	pass := os.Args[2]
 
-	buildSteps()
+	c := newClient()
+	c.login(user, pass)
+	c.selectCentre()
+	c.selectActivityCreche()
+	// over 2s, 2 hours = 882
+	// under 2s, 2 hours = 752
+	c.selectCrecheType("882")
+	c.addBooking()
+	c.applyVoucher()
+	c.complete()
+}
+
+func newClient() *client {
 	// All users of cookiejar should import "golang.org/x/net/publicsuffix"
 	jar, err := cookiejar.New(&cookiejar.Options{PublicSuffixList: publicsuffix.List})
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	client := &http.Client{
+	c := &http.Client{
 		Jar: jar,
 	}
 
-	// For each step
-	//	prepare
-	//	before
-	//	build request
-	//	do request
-	//		retries every x seconds
-	//	after
-	// Next
-	current := steps["loginCookies"]
-	for current != nil {
-		current.prepare()
-		if current.before != nil {
-			current.before(client, share)
-		}
-
-		log.Printf("Making %s request to %s with data %v\n", current.method, current.url.String(), current.values)
-		var res *http.Response
-		var err error
-		switch current.method {
-		case GET:
-			res, err = client.Get(current.url.String())
-		case POST:
-			res, err = client.PostForm(current.url.String(), current.values)
-		}
-		if err != nil {
-			if current.retries < 5 {
-				current.retries++
-				log.Printf("Trying again (attempt %d) Error: %s\n", current.retries, err)
-				time.Sleep(5 * time.Second)
-				continue
-			} else {
-				log.Fatalf("Too many errors calling %s, giving up: %s\n", current.url.String(), err)
-			}
-		}
-
-		log.Printf("Completed %s request to %s\n", current.method, current.url.String())
-		if current.after != nil {
-			current.after(client, res, share)
-		}
-		current = steps[current.next]
-	}
-	fmt.Println(share)
-
+	return &client{c}
 }
 
-func (s *step) prepare() {
-	var err error
-	s.url, err = url.Parse(s.rawurl)
+func (c *client) login(user, pass string) {
+	u, err := url.Parse("https://better.legendonlineservices.co.uk/east_greenwich/account/login")
 	if err != nil {
-		log.Fatalf("Bad rawurl (%s): %s\n", s.rawurl, err)
+		log.Fatalf("Failed to parse url (%s): %s", u.String(), err)
+	}
+	// get cookies from login page, no need for the resonse
+	for attempt := 1; attempt <= maxRetries; attempt++ {
+		res, err := c.Get(u.String())
+		if err == nil && res.StatusCode == 200 {
+			break
+		}
+		if attempt >= maxRetries {
+			log.Fatalf("Too many failed attempts, giving up (%s): %s", u.String(), err)
+		}
 	}
 
-	s.values = url.Values{}
-	for k, v := range s.rawvalues {
-		s.values.Set(k, v)
+	// set form values for login POST request
+	v := url.Values{}
+	v.Set("login.Email", user)
+	v.Set("login.Password", pass)
+	v.Set("login.RedirectURL", "")
+	// this form value is a cookie received on initial request
+	for _, cookie := range c.Jar.Cookies(u) {
+		// fmt.Printf("  %s: %s\n", cookie.Name, cookie.Value)
+		if cookie.Name == "__RequestVerificationToken" {
+			v.Set("__RequestVerificationToken", cookie.Value)
+		}
+	}
+
+	// login
+	for attempt := 1; attempt <= maxRetries; attempt++ {
+		res, err := c.PostForm(u.String(), v)
+		if err == nil && res.StatusCode == 200 {
+			fmt.Println("Login resonse status code: ", res.StatusCode)
+			break
+		}
+		if attempt >= maxRetries {
+			log.Fatalf("Too many failed attempts, giving up (%s): %s", u.String(), err)
+		}
+	}
+}
+
+func (c *client) selectCentre() {
+	// Select correct club (Greenwich Centre)
+	v := url.Values{}
+	v.Set("club", "343")
+	v.Set("X-Requested-With", "XMLHttpRequest")
+
+	u, err := url.Parse("https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/behaviours")
+	if err != nil {
+		log.Fatalf("Failed to parse url (%s): %s", u.String(), err)
+	}
+
+	for attempt := 1; attempt <= maxRetries; attempt++ {
+		res, err := c.PostForm(u.String(), v)
+		if err == nil && res.StatusCode == 200 {
+			fmt.Println("Posted club to", u.String())
+			break
+		}
+		if attempt >= maxRetries {
+			log.Fatalf("Too many failed attempts, giving up (%s): %s", u.String(), err)
+		}
 	}
 
 }
 
-func buildSteps() {
+func (c *client) selectActivityCreche() {
+	// Select correct activity category (Creche)
+	v := url.Values{}
+	v.Set("behaviours", "2366")
+	v.Set("bookingType", "1")
+	v.Set("X-Requested-With", "XMLHttpRequest")
 
-	// Login "/east_greenwich/account/login"
-	// GET for cookies
-	steps["loginCookies"] = &step{
-		rawurl: "https://better.legendonlineservices.co.uk/east_greenwich/account/login",
-		method: GET,
-		next:   "login",
+	u, err := url.Parse("https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activities")
+	if err != nil {
+		log.Fatalf("Failed to parse url (%s): %s", u.String(), err)
 	}
 
-	// Need cookie __RequestVerificationToken added as param for login POST
-	// POST login.Email, login.Password, login.RedirectURL, __RequestVerificationToken
-	steps["login"] = &step{
-		rawurl: "https://better.legendonlineservices.co.uk/east_greenwich/account/login",
-		method: POST,
-		rawvalues: map[string]string{
-			"login.Email":                os.Args[1],
-			"login.Password":             os.Args[2],
-			"login.RedirectURL":          "",
-			"__RequestVerificationToken": "",
-		},
-		next: "behaviours",
+	for attempt := 1; attempt <= maxRetries; attempt++ {
+		res, err := c.PostForm(u.String(), v)
+		if err == nil && res.StatusCode == 200 {
+			fmt.Println("Posted activity category to", u.String())
+			break
+		}
+		if attempt >= maxRetries {
+			log.Fatalf("Too many failed attempts, giving up (%s): %s", u.String(), err)
+		}
 	}
-	steps["login"].before = func(c *http.Client, data map[string]string) {
-		for _, cookie := range c.Jar.Cookies(steps["login"].url) {
-			if cookie.Name == "__RequestVerificationToken" {
-				steps["login"].rawvalues[cookie.Name] = cookie.Value
-			}
+}
+
+func (c *client) selectCrecheType(activity string) {
+	// Select correct activity (CreCreche Over 2's - Two hours)
+	v := url.Values{}
+	// v.Set("activity", "882") Over 2s two hours
+	v.Set("activity", activity)
+	v.Set("X-Requested-With", "XMLHttpRequest")
+
+	u, err := url.Parse("https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activitySelect")
+	if err != nil {
+		log.Fatalf("Failed to parse url (%s): %s", u.String(), err)
+	}
+
+	for attempt := 1; attempt <= maxRetries; attempt++ {
+		res, err := c.PostForm(u.String(), v)
+		if err == nil && res.StatusCode == 200 {
+			fmt.Println("Posted activity to", u.String())
+			break
+		}
+		if attempt >= maxRetries {
+			log.Fatalf("Too many failed attempts, giving up (%s): %s", u.String(), err)
+		}
+	}
+}
+
+func (c *client) getTimetableHTML() (*goquery.Document, error) {
+	// Submit Timetable button
+	v := url.Values{}
+	v.Set("X-Requested-With", "XMLHttpRequest")
+
+	u, err := url.Parse("https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/TimeTable")
+	if err != nil {
+		log.Fatalf("Failed to parse url (%s): %s", u.String(), err)
+	}
+
+	for attempt := 1; attempt <= maxRetries; attempt++ {
+		res, err := c.PostForm(u.String(), v)
+		if err == nil && res.StatusCode == 200 {
+			fmt.Println("Posted Timetable button to", u.String())
+			break
+		}
+		if attempt >= maxRetries {
+			log.Fatalf("Too many failed attempts, giving up (%s): %s", u.String(), err)
 		}
 	}
 
-	// Behaviours "/east_greenwich/bookingscentre/behaviours"
-	// POST ("club", "343"), ("X-Requested-With", "XMLHttpRequest")
-	steps["behaviours"] = &step{
-		rawurl: "https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/behaviours",
-		method: POST,
-		rawvalues: map[string]string{
-			"club":             "343",
-			"X-Requested-With": "XMLHttpRequest",
-		},
-		next: "activities",
+	// Get Timetable subdocument html - sometimes after previous (u5)
+	// this is the html containing the creche slots and their IDs
+	u, err = url.Parse("https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/Timetable?KeepThis=true&")
+	if err != nil {
+		log.Fatalf("Failed to parse url (%s): %s", u.String(), err)
 	}
 
-	// Activities "/east_greenwich/bookingscentre/activities"
-	// POST ("behaviours", "2366"), ("bookingType", "1"), ("X-Requested-With", "XMLHttpRequest")
-	steps["activities"] = &step{
-		rawurl: "https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activities",
-		method: POST,
-		rawvalues: map[string]string{
-			"behaviours":       "2366",
-			"bookingType":      "1",
-			"X-Requested-With": "XMLHttpRequest",
-		},
-		next: "activitySelect",
+	var res *http.Response
+	for attempt := 1; attempt <= maxRetries; attempt++ {
+		res, err = c.Get(u.String())
+		if err == nil && res.StatusCode == 200 {
+			fmt.Println("Got Timetable subdocument from", u.String())
+			break
+		}
+		if attempt >= maxRetries {
+			log.Fatalf("Too many failed attempts, giving up (%s): %s", u.String(), err)
+		}
 	}
+	defer res.Body.Close()
+	// Load the HTML document
+	return goquery.NewDocumentFromReader(res.Body)
+}
 
-	// Activity Select	"/east_greenwich/bookingscentre/activitySelect"
-	// POST ("activity", "882"), ("X-Requested-With", "XMLHttpRequest")
-	// creche for Under 2 2 hours is activity 752
-	steps["activitySelect"] = &step{
-		rawurl: "https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activitySelect",
-		method: POST,
-		rawvalues: map[string]string{
-			"activity":         "882",
-			"X-Requested-With": "XMLHttpRequest",
-		},
-		next: "timetableSubmit",
-	}
-
-	// Timetable "/east_greenwich/bookingscentre/TimeTable"
-	// POST ("X-Requested-With", "XMLHttpRequest")
-	steps["timetableSubmit"] = &step{
-		rawurl: "https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/TimeTable",
-		method: POST,
-		rawvalues: map[string]string{
-			"X-Requested-With": "XMLHttpRequest",
-		},
-		next: "timetableRead",
-	}
-
-	// "/east_greenwich/BookingsCentre/Timetable?KeepThis=true&"
-	// 	GET ("KeepThis", "true")
-	// 	Search response Body for slotID (curently just grabs last one on page = 1130)
-	steps["timetableRead"] = &step{
-		rawurl: "https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/Timetable",
-		query: map[string]string{
-			"KeepThis": "true",
-		},
-		method: GET,
-		after: func(c *http.Client, r *http.Response, share map[string]string) {
-			// Extract slot ID from last slot (1130, two weeks from today)
-			doc, err := html.Parse(r.Body)
-			// html.Parse consumes the entire Body (to EOF), so I can close Body here.
-			r.Body.Close()
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			// Depth-first search, from bottom to top of doc
-			var getSlot func(*html.Node) string
-			getSlot = func(n *html.Node) string {
-				if n.Type == html.ElementNode && n.Data == "a" {
-					for _, a := range n.Attr {
-						fmt.Println("Checking for slot id in: ", a)
-						// find <a id='slot5926337' class='sporthallSlotAddLink' href='#' onclick='addSportsHallBooking(5926337); return false;' class='addLink'>
-						if a.Key == "id" {
-							if strings.HasPrefix(a.Val, "slot") {
-								fmt.Println("Found booking slot", a.Val)
-								return strings.TrimPrefix(a.Val, "slot")
-							}
-							break
-						}
+func getSlotID(doc *goquery.Document) string {
+	// Extract slot ID from last slot (1130, two weeks from today)
+	// Find the slots
+	// wrapper := doc.Find(".sportsHallSlotWrapper").Each(func(i int, s *goquery.Selection) {
+	// 	if s.Is
+	// wrapper.Find(".sporthallSlot")
+	// 	// For each slot div, get the time and the slotId
+	// 	datetime
+	// 	band := s.Find("a").Text()
+	// 	title := s.Find("i").Text()
+	// 	fmt.Printf("Review %d: %s - %s\n", i, band, title)
+	// })
+	// Depth-first search, from bottom to top of doc
+	var getSlot func(*html.Node) string
+	getSlot = func(n *html.Node) string {
+		if n.Type == html.ElementNode && n.Data == "a" {
+			for _, a := range n.Attr {
+				// find <a id='slot5926337' class='sporthallSlotAddLink' href='#' onclick='addSportsHallBooking(5926337); return false;' class='addLink'>
+				if a.Key == "id" {
+					if strings.HasPrefix(a.Val, "slot") {
+						fmt.Println("Found booking slot", a.Val)
+						return strings.TrimPrefix(a.Val, "slot")
 					}
+					break
 				}
-				for c := n.LastChild; c != nil; c = c.PrevSibling {
-					// If the target is found, unravel the recursion
-					if r := getSlot(c); r != "" {
-						return r
+			}
+		}
+		for c := n.LastChild; c != nil; c = c.PrevSibling {
+			// If the target is found, unravel the recursion
+			if r := getSlot(c); r != "" {
+				return r
+			}
+		}
+		return ""
+	}
+	// return getSlot(doc), nil
+	return ""
+}
+
+func (c *client) addBooking() {
+	doc, err := c.getTimetableHTML()
+	if err != nil {
+		log.Fatalf("Bad timetable HTML: %s", err)
+	}
+
+	slotID := getSlotID(doc)
+	if len(slotID) < 1 {
+		log.Fatalf("Failed to find slotID")
+	}
+	// for selecting a booking, see BookingAjax.js
+	// Click to select booking calls addSportsHallBooking(bookingID): line 150
+	// addSportsHallBooking() sets selectedCourts to empty string if selectedCourts
+	// is not provided as second parameter, as in this case
+	selectedCourts := ""
+	ajax := fmt.Sprintf("%.16f", rand.Float64()) // js NUMBER ~= float64
+	// slotID := "5641294"                          //should just be able to use final booking
+	// addSportsHallBooking() then calls addBooking(id, url)
+	// addBooking(id, "AddSportsHallBooking?slotId=" + id + "&selectedCourts=" + selectedCourts);
+	// AddSportsHallBooking?slotId=5857026&selectedCourts=&ajax=0.2919207756868989
+	// build the url
+	bookingURL := url.URL{}
+	bookingURL.Scheme = "https"
+	bookingURL.Host = "better.legendonlineservices.co.uk"
+	bookingURL.Path = "/east_greenwich/BookingsCentre/AddSportsHallBooking"
+	q := bookingURL.Query()
+	q.Set("slotId", slotID)
+	q.Set("selectedCourts", selectedCourts)
+	q.Set("ajax", ajax)
+	bookingURL.RawQuery = q.Encode()
+	// addBooking(id, url) starts at line 109 of BookinAjax.js
+	// need to find how to locaate correct link to use, because I dont
+	// notice an obvious generation scheme for booking IDs.
+	//                 https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/AddSportsHallBooking?ajax=0.6046602879796196&selectedCourts=&slotId=235234
+	// get request to: https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/AddSportsHallBooking?slotId=5641294&selectedCourts=&ajax=0.09610071300889433
+	// params: slotId	5641294
+	//   selectedCourts
+	//   ajax	0.09610071300889433	---> from math.random, wonder what this does?
+
+	var res *http.Response
+	for attempt := 1; attempt <= maxRetries; attempt++ {
+		fmt.Println("Requesting to add booking to", bookingURL.String())
+		res, err = c.Get(bookingURL.String())
+		if err == nil && res.StatusCode == 200 {
+			fmt.Println("Added booking:", bookingURL.String())
+			break
+		}
+		if attempt >= maxRetries {
+			log.Fatalf("Too many failed attempts, giving up (%s): %s", bookingURL.String(), err)
+		}
+	}
+	defer res.Body.Close()
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		log.Fatalf("Failed to read addBooking response body: %s", err)
+	}
+	fmt.Println("Recieved json:", string(body))
+
+	// TODO: get more data from json resonse
+	//		1. unix nanoseconds describing the slot start/end
+	//			can be used to check correctness before finishing
+	data := struct{ Success bool }{false} // anonymous struct for one-off use
+	err = json.Unmarshal(body, &data)
+	if err != nil {
+		log.Printf("Failed to parse booking response json")
+	}
+
+	fmt.Println("Booking added to basket =", data.Success)
+}
+
+func (c *client) applyVoucher() {
+	// Get basket
+
+	uBasket, err := url.Parse("https://better.legendonlineservices.co.uk/east_greenwich/Basket/Index")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var res *http.Response
+	for attempt := 1; attempt <= maxRetries; attempt++ {
+		fmt.Println("Requesting basket", uBasket.String())
+		res, err = c.Get(uBasket.String())
+		if err == nil && res.StatusCode == 200 {
+			fmt.Println("Got Basket from", uBasket.String())
+			break
+		}
+		if attempt >= maxRetries {
+			log.Fatalf("Too many failed attempts, giving up (%s): %s", uBasket.String(), err)
+		}
+	}
+
+	// Find Voucher button/id/href
+	defer res.Body.Close()
+	doc, err := html.Parse(res.Body)
+	if err != nil {
+		log.Fatalf("Failed to parse html from basket: %s", err)
+	}
+
+	// Depth-first search, from bottom to top of doc
+	var getVoucher func(*html.Node) string
+	getVoucher = func(n *html.Node) string {
+		if n.Type == html.ElementNode && n.Data == "a" {
+			for _, a := range n.Attr {
+				if a.Key == "href" {
+					// looking for href = "/east_greenwich/Basket/AllocateBookingCredit?reservationId=49600430"
+					if strings.Contains(a.Val, "AllocateBookingCredit") {
+						fmt.Println("Found Voucher link to", a.Val)
+						return a.Val
 					}
+					break
 				}
-				return ""
 			}
-			share["slotID"] = getSlot(doc)
-		},
-		// next: "addBooking",
+		}
+		for c := n.LastChild; c != nil; c = c.PrevSibling {
+			// If the target is found, unravel the recursion
+			if r := getVoucher(c); r != "" {
+				return r
+			}
+		}
+		return ""
+	}
+	uVoucherPath := getVoucher(doc)
+
+	// Apply Voucher
+	// https://better.legendonlineservices.co.uk/east_greenwich/Basket/AllocateBookingCredit?reservationId=49600430
+	uVoucher, err := url.Parse("https://better.legendonlineservices.co.uk" + uVoucherPath)
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	// Add Booking "/east_greenwich/BookingsCentre/AddSportsHallBooking?ajax=0.6046602879796196&selectedCourts=&slotId=235234"
-	// GET ("slotId", slotID), ("selectedCourts", selectedCourts), ("ajax", ajax)
-	steps["addBooking"] = &step{
-		rawurl: "https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/AddSportsHallBooking",
-		query: map[string]string{
-			"selectedCourts": "",
-			"ajax":           "",
-			"slotID":         "",
-		},
-		method: GET,
-		before: func(c *http.Client, share map[string]string) {
-			steps["addBooking"].query["ajax"] = fmt.Sprintf("%.16f", rand.Float64()) // js NUMBER ~= float64
-			steps["addBooking"].query["slotID"] = share["slotID"]
-		},
-		//  Read JSON from response Body to get succes (and slot unix times?)
-		//	??Check Json message to verify correct slot before continuing?
-		after: func(c *http.Client, r *http.Response, share map[string]string) {
-			defer r.Body.Close()
-			body, err := ioutil.ReadAll(r.Body)
-			if err != nil {
-				log.Fatal(err)
-			}
-			fmt.Println("Recieved json:", string(body))
-			// TODO: get more data from json response
-			//		1. unix nanoseconds describing the slot start/end
-			//			can be used to check correctness before finishing
-			data := struct{ Success bool }{} // anonymous struct for one-off use
-			err = json.Unmarshal(body, &data)
-			if err != nil {
-				log.Fatal(err)
-			}
-			fmt.Println("Booking added to basket =", data.Success)
-		},
-		next: "basket",
+	for attempt := 1; attempt <= maxRetries; attempt++ {
+		fmt.Println("Applying Voucher", uVoucher.String())
+		res, err := c.Get(uVoucher.String())
+		if err == nil && res.StatusCode == 200 {
+			fmt.Println("Applied Voucher at", uVoucher.String())
+			break
+		}
+		if attempt >= maxRetries {
+			log.Fatalf("Too many failed attempts, giving up (%s): %s", uVoucher.String(), err)
+		}
+	}
+}
+
+func (c *client) complete() {
+	// Complete Purchase/Check Out
+	// https://better.legendonlineservices.co.uk/east_greenwich/Basket/Pay
+	uPay, err := url.Parse("https://better.legendonlineservices.co.uk/east_greenwich/Basket/Pay")
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	// Message???		"/east_greenwich/BookingsCentre/Message?Success=true&AllowRetry=false&Message=Booking+added+to+basket&StartTime=Tue,+26+Mar+2019+11:30:00+GMT&EndTime=Tue,+26+Mar+2019+13:30:00+GMT&FacilityName=Greenwich+Centre&ActivityName=Creche+Over+2"
-	// GET -not required? params from JSON above
-	// NOT IMPLEMENTED
-
-	// Basket "/east_greenwich/Basket/Index"
-	// GET
-	// Search for reservation ID (curently just grabs last one on page, I think this is the last added booking)
-	steps["basket"] = &step{
-		rawurl: "https://better.legendonlineservices.co.uk/east_greenwich/Basket/Index",
-		method: GET,
-		after: func(c *http.Client, r *http.Response, share map[string]string) {
-			// Find Voucher button/id/href
-			doc, err := html.Parse(r.Body)
-			// html.Parse consumes the entire Body (to EOF), so I can close Body here.
-			r.Body.Close()
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			// Depth-first search, from bottom to top of doc
-			var getVoucher func(*html.Node) string
-			getVoucher = func(n *html.Node) string {
-				if n.Type == html.ElementNode && n.Data == "a" {
-					for _, a := range n.Attr {
-						if a.Key == "href" {
-							// looking for href = "/east_greenwich/Basket/AllocateBookingCredit?reservationId=49600430"
-							if strings.Contains(a.Val, "AllocateBookingCredit") {
-								fmt.Println("Found Voucher link to", a.Val)
-								return a.Val
-							}
-							break
-						}
-					}
-				}
-				for c := n.LastChild; c != nil; c = c.PrevSibling {
-					// If the target is found, unravel the recursion
-					if r := getVoucher(c); r != "" {
-						return r
-					}
-				}
-				return ""
-			}
-			uVoucherPath := getVoucher(doc)
-			u, err := url.Parse(uVoucherPath)
-			if err != nil {
-				log.Printf("basket step, error parsing url %s: %s\n", uVoucherPath, err)
-			}
-			q, err := url.ParseQuery(u.RawQuery)
-			if err != nil {
-				log.Printf("basket step, error parsing query string %s: %s\n", u.RawQuery, err)
-			}
-			share["reservationId"] = q.Get("reservationId")
-		},
-		next: "applyVoucher",
+	var res *http.Response
+	for attempt := 1; attempt <= maxRetries; attempt++ {
+		fmt.Println("Completing Transaction (Pay zero balance and confirm booking)", uPay.String())
+		res, err = c.Get(uPay.String())
+		if err == nil && res.StatusCode == 200 {
+			fmt.Println("Completed Transaction!!", uPay.String())
+			break
+		}
+		if attempt >= maxRetries {
+			log.Fatalf("Too many failed attempts, giving up (%s): %s", uPay.String(), err)
+		}
 	}
-
-	// Apply Voucher "/east_greenwich/Basket/AllocateBookingCredit?reservationId=49600430"
-	// GET ("reservationID", "XXXXXXXXX")
-	steps["applyVoucher"] = &step{
-		rawurl: "https://better.legendonlineservices.co.uk/east_greenwich/Basket/AllocateBookingCredit",
-		method: GET,
-		rawvalues: map[string]string{
-			"reservationId": "",
-		},
-		before: func(c *http.Client, share map[string]string) {
-			steps["applyVoucher"].query["reservationId"] = share["reservationId"]
-		},
-		next: "complete",
-	}
-
-	// Pay "/east_greenwich/Basket/Pay"
-	// GET
-	steps["complete"] = &step{
-		rawurl: "https://better.legendonlineservices.co.uk/east_greenwich/Basket/Pay",
-		method: GET,
-	}
-
-	// Check response for successful completion?????
-	// go again if failed (x5?)
-
 }
