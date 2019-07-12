@@ -95,7 +95,8 @@ func (c *client) login(user, pass string) {
 		if err == nil && res.StatusCode == 200 {
 			break
 		}
-		log.Printf("Failed attempt at %s. StatusCode %d, error: %s", u.Path, res.StatusCode, err)
+		log.Printf("Failed attempt at %s. StatusCode %d, error: %s\n", u.Path, res.StatusCode, err)
+		time.Sleep(5 * time.Second)
 		if attempt >= maxRetries {
 			log.Fatalf("Too many failed attempts, giving up (%s): %s", u.String(), err)
 		}
