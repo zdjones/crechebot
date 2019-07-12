@@ -55,6 +55,14 @@ func main() {
 		Jar: jar,
 	}
 
+	// For each step
+	//	prepare
+	//	before
+	//	build request
+	//	do request
+	//		retries every x seconds
+	//	after
+	// Next
 	current := steps["loginCookies"]
 	for current != nil {
 		current.prepare()
@@ -74,11 +82,11 @@ func main() {
 		if err != nil {
 			if current.retries < 5 {
 				current.retries++
-				log.Printf("Trying again (attempt %d\n", current.retries)
+				log.Printf("Trying again (attempt %d) Error: %s\n", current.retries, err)
 				time.Sleep(5 * time.Second)
 				continue
 			} else {
-				log.Fatalf("Too many error calling %s, giving up: %s\n", current.url.String(), err)
+				log.Fatalf("Too many errors calling %s, giving up: %s\n", current.url.String(), err)
 			}
 		}
 
@@ -88,13 +96,8 @@ func main() {
 		}
 		current = steps[current.next]
 	}
+	fmt.Println(share)
 
-	// For each step
-	//	pre-request tasks
-	//	build request
-	//	do request
-	//		retries every x seconds
-	//	post-request tasks
 }
 
 func (s *step) prepare() {
@@ -112,17 +115,17 @@ func (s *step) prepare() {
 }
 
 func buildSteps() {
-	// Login			"/east_greenwich/account/login"
-	// 					GET for cookies
 
+	// Login "/east_greenwich/account/login"
+	// GET for cookies
 	steps["loginCookies"] = &step{
 		rawurl: "https://better.legendonlineservices.co.uk/east_greenwich/account/login",
 		method: GET,
 		next:   "login",
 	}
 
-	// 					Need cookie __RequestVerificationToken added as param for login POST
-	// 					POST login.Email, login.Password, login.RedirectURL, __RequestVerificationToken
+	// Need cookie __RequestVerificationToken added as param for login POST
+	// POST login.Email, login.Password, login.RedirectURL, __RequestVerificationToken
 	steps["login"] = &step{
 		rawurl: "https://better.legendonlineservices.co.uk/east_greenwich/account/login",
 		method: POST,
@@ -142,8 +145,8 @@ func buildSteps() {
 		}
 	}
 
-	// Behaviours		"/east_greenwich/bookingscentre/behaviours"
-	// 					POST ("club", "343"), ("X-Requested-With", "XMLHttpRequest")
+	// Behaviours "/east_greenwich/bookingscentre/behaviours"
+	// POST ("club", "343"), ("X-Requested-With", "XMLHttpRequest")
 	steps["behaviours"] = &step{
 		rawurl: "https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/behaviours",
 		method: POST,
@@ -153,8 +156,9 @@ func buildSteps() {
 		},
 		next: "activities",
 	}
-	// Activities		"/east_greenwich/bookingscentre/activities"
-	// 					POST ("behaviours", "2366"), ("bookingType", "1"), ("X-Requested-With", "XMLHttpRequest")
+
+	// Activities "/east_greenwich/bookingscentre/activities"
+	// POST ("behaviours", "2366"), ("bookingType", "1"), ("X-Requested-With", "XMLHttpRequest")
 	steps["activities"] = &step{
 		rawurl: "https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activities",
 		method: POST,
@@ -165,9 +169,10 @@ func buildSteps() {
 		},
 		next: "activitySelect",
 	}
+
 	// Activity Select	"/east_greenwich/bookingscentre/activitySelect"
-	// 					POST ("activity", "882"), ("X-Requested-With", "XMLHttpRequest")
-	//					creche for Under 2 2 hours is activity 752
+	// POST ("activity", "882"), ("X-Requested-With", "XMLHttpRequest")
+	// creche for Under 2 2 hours is activity 752
 	steps["activitySelect"] = &step{
 		rawurl: "https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activitySelect",
 		method: POST,
@@ -177,8 +182,9 @@ func buildSteps() {
 		},
 		next: "timetableSubmit",
 	}
-	// Timetable		"/east_greenwich/bookingscentre/TimeTable"
-	//					POST ("X-Requested-With", "XMLHttpRequest")
+
+	// Timetable "/east_greenwich/bookingscentre/TimeTable"
+	// POST ("X-Requested-With", "XMLHttpRequest")
 	steps["timetableSubmit"] = &step{
 		rawurl: "https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/TimeTable",
 		method: POST,
@@ -187,9 +193,10 @@ func buildSteps() {
 		},
 		next: "timetableRead",
 	}
-	//					"/east_greenwich/BookingsCentre/Timetable?KeepThis=true&"
-	// 					GET ("KeepThis", "true")
-	// 					Search response Body for slotID (curently just grabs last one on page = 1130)
+
+	// "/east_greenwich/BookingsCentre/Timetable?KeepThis=true&"
+	// 	GET ("KeepThis", "true")
+	// 	Search response Body for slotID (curently just grabs last one on page = 1130)
 	steps["timetableRead"] = &step{
 		rawurl: "https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/Timetable",
 		query: map[string]string{
@@ -210,6 +217,7 @@ func buildSteps() {
 			getSlot = func(n *html.Node) string {
 				if n.Type == html.ElementNode && n.Data == "a" {
 					for _, a := range n.Attr {
+						fmt.Println("Checking for slot id in: ", a)
 						// find <a id='slot5926337' class='sporthallSlotAddLink' href='#' onclick='addSportsHallBooking(5926337); return false;' class='addLink'>
 						if a.Key == "id" {
 							if strings.HasPrefix(a.Val, "slot") {
@@ -230,11 +238,11 @@ func buildSteps() {
 			}
 			share["slotID"] = getSlot(doc)
 		},
-		next: "addBooking",
+		// next: "addBooking",
 	}
 
-	// Add Booking		"/east_greenwich/BookingsCentre/AddSportsHallBooking?ajax=0.6046602879796196&selectedCourts=&slotId=235234"
-	// 					GET ("slotId", slotID), ("selectedCourts", selectedCourts), ("ajax", ajax)
+	// Add Booking "/east_greenwich/BookingsCentre/AddSportsHallBooking?ajax=0.6046602879796196&selectedCourts=&slotId=235234"
+	// GET ("slotId", slotID), ("selectedCourts", selectedCourts), ("ajax", ajax)
 	steps["addBooking"] = &step{
 		rawurl: "https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/AddSportsHallBooking",
 		query: map[string]string{
@@ -268,13 +276,14 @@ func buildSteps() {
 		},
 		next: "basket",
 	}
+
 	// Message???		"/east_greenwich/BookingsCentre/Message?Success=true&AllowRetry=false&Message=Booking+added+to+basket&StartTime=Tue,+26+Mar+2019+11:30:00+GMT&EndTime=Tue,+26+Mar+2019+13:30:00+GMT&FacilityName=Greenwich+Centre&ActivityName=Creche+Over+2"
-	// 					GET -not required? params from JSON above
+	// GET -not required? params from JSON above
 	// NOT IMPLEMENTED
 
-	// Basket			"/east_greenwich/Basket/Index"
-	// 					GET
-	// 					Search for reservation ID (curently just grabs last one on page, I think this is the last added booking)
+	// Basket "/east_greenwich/Basket/Index"
+	// GET
+	// Search for reservation ID (curently just grabs last one on page, I think this is the last added booking)
 	steps["basket"] = &step{
 		rawurl: "https://better.legendonlineservices.co.uk/east_greenwich/Basket/Index",
 		method: GET,
@@ -323,8 +332,9 @@ func buildSteps() {
 		},
 		next: "applyVoucher",
 	}
-	// Apply Voucher	"/east_greenwich/Basket/AllocateBookingCredit?reservationId=49600430"
-	// 					GET ("reservationID", "XXXXXXXXX")
+
+	// Apply Voucher "/east_greenwich/Basket/AllocateBookingCredit?reservationId=49600430"
+	// GET ("reservationID", "XXXXXXXXX")
 	steps["applyVoucher"] = &step{
 		rawurl: "https://better.legendonlineservices.co.uk/east_greenwich/Basket/AllocateBookingCredit",
 		method: GET,
@@ -336,12 +346,14 @@ func buildSteps() {
 		},
 		next: "complete",
 	}
-	// Pay				"/east_greenwich/Basket/Pay"
-	// 					GET
+
+	// Pay "/east_greenwich/Basket/Pay"
+	// GET
 	steps["complete"] = &step{
 		rawurl: "https://better.legendonlineservices.co.uk/east_greenwich/Basket/Pay",
 		method: GET,
 	}
+
 	// Check response for successful completion?????
 	// go again if failed (x5?)
 
