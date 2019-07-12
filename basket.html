@@ -1,0 +1,440 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head id="Head1">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Languge" content="en-GB" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+
+
+    <title>Online Member Services</title>
+    <link href="/sitecss/gllbetter/global.min.css?v=63688688113" rel="stylesheet" type="text/css" />
+    <link href="/sitecss/gllbetter/BaseCss.css?v=63688688113" rel="stylesheet" type="text/css" />
+    <link href="/sitecss/gllbetter/Jtip.css?v=63688688113" rel="stylesheet" type="text/css" />
+    <link href="/sitecss/gllbetter/LayoutCss.css?v=63688688113" rel="stylesheet" type="text/css" />
+    <link href="/sitecss/gllbetter/jquery.datepick.css?v=63688688113" rel="stylesheet" type="text/css" />
+    <link href="/sitecss/gllbetter/TextCss.css?v=63688688113" rel="stylesheet" type="text/css" />
+    <link href="/sitecss/gllbetter/AdminButtons.css?v=63688688113" rel="stylesheet" type="text/css" />
+    <link href="/sitecss/gllbetter/jquery.multiSelect.css?v=63688688113" rel="stylesheet" type="text/css" />
+    <link href="/sitecss/gllbetter/Thickbox.css?v=63688688113" rel="stylesheet" type="text/css" />
+    <link href="/sitecss/gllbetter/CSCCss.css?v=63688688113" rel="stylesheet" type="text/css" />
+    <link href="/sitecss/gllbetter/MacroCss.css?v=63688688113" rel="stylesheet" type="text/css" />
+
+    <script src="/sitescripts/jquery.min.js?v=63688688113" type="text/javascript"></script>
+    <script src="/sitescripts/jquery-migrate.min.js?v=63688688113" type="text/javascript"></script>
+    <script src="/sitescripts/MicrosoftAjax.js?v=63688688113" type="text/javascript"></script>
+    <script src="/sitescripts/MicrosoftMvcAjax.js?v=63688688113" type="text/javascript"></script>
+    <script src="/sitescripts/jquery.collapsor.js?v=63688688113" type="text/javascript"></script>
+    <script src="/sitescripts/Thickbox.js?v=63688688113" type="text/javascript"></script>
+    <script src="/sitescripts/Resizer.js?v=63688688113" type="text/javascript"></script>
+    <script src="/sitescripts/CMSSearch.js?v=63688688113" type="text/javascript"></script>
+    <script src="/sitescripts/jtip.js?v=63688688113" type="text/javascript"></script>
+    <script src="/sitescripts/paRSS.js?v=63688688113" type="text/javascript"></script>
+    <script src="/sitescripts/PopLink.js?v=63688688113" type="text/javascript"></script>
+
+    <script src="/Scripts/knockout-3.3.0.js?v=63688688113" type="text/javascript"></script>
+    <script src="/Scripts/knockout.mapping-latest.js?v=63688688113" type="text/javascript"></script>
+    <script src="/Scripts/underscore.js?v=63688688113" type="text/javascript"></script>
+    <script src="/Scripts/Default/jquery.cookie.js?v=63688688113" type="text/javascript"></script>
+    <script src="/Scripts/Default/jquery.pager.js?v=63688688113" type="text/javascript"></script>
+
+
+
+    <style>
+        .basketItemWarning {
+            padding: 5px;
+            margin-bottom: 6px;
+            color: #a94442;
+            background-color: #f2dede;
+            border-color: #ebccd1;
+            font-size: 15px;
+        }
+    </style>
+
+    <link href='/east_greenwich/CustomStyleSheet.css?v=63688688113' rel='Stylesheet' type='text/css' />
+    <script type='text/javascript' src='/east_greenwich/CustomScript.js?v=63688688113'></script>
+
+
+
+
+    <script type="text/javascript" src="../../scripts/legendware/testautomation.js"></script>
+
+
+
+
+
+
+    <link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css' />
+</head>
+
+<body>
+    <!-- Google Tag Manager -->
+    <noscript>
+        <iframe src="//www.googletagmanager.com/ns.html?id=GTM-W452ST" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <script>
+        (function (w, d, s, l, i) {
+            w[l] = w[l] || [];
+            w[l].push({
+                'gtm.start': new Date().getTime(),
+                event: 'gtm.js'
+            });
+            var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s),
+                dl = l != 'dataLayer' ? '&l=' + l : '';
+            j.async = true;
+            j.src = '//www.googletagmanager.com/gtm.js?id=' + i + dl;
+            f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-W452ST');
+    </script>
+    <!-- End Google Tag Manager -->
+
+    <script src="/Themes/Default/Content/Shared/JS/noticesModal.viewmodel.js?v=63688688113"
+        type="text/javascript"></script>
+    <script src="/Themes/Default/Content/Shared/JS/noticesModalServices.js?v=63688688113"
+        type="text/javascript"></script>
+
+    <script type="text/javascript">
+        var CmsBaseUrl = '/east_greenwich/account/login';
+        var GlobalConfigCurrentLocation = 'east_greenwich';
+
+        $(document).ready(function () {
+            var noticeVM = new NoticesModalViewModel(function () {
+                tb_show("Notices", "TB_inline?height=255&width=700&inlineId=tbNotice&modal=false", "");
+                noticeVM.dismissModal();
+            });
+
+            ko.applyBindings(noticeVM, $("#tbNotice")[0]);
+            noticeVM.getNotices();
+            var forgeryToken = '<input name="__RequestVerificationToken" type="hidden" value="b4LPJRCuevbrhN99kuNLSD5r6lo0C2wEVwputWTNBAKZ1WW0Mwd81E4MZz2jkOlCZIrmlKkAGblfNIw0O2kHat4jE_N74uaaaW9a4giI_kZAAAma0" />';
+            $('#form1').append(forgeryToken);
+        });
+    </script>
+
+    <div id="tbNotice" style="display: none">
+        <div class="tb-notice-wrapper">
+            <div class="tb-notice-content">
+                <div id="noticesList" data-bind="foreach: notices">
+                    <div class="notice" data-bind="html: Notice">
+                        <b>No Notices</b>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var addAntiForgeryToken = function (data) {
+            data.__RequestVerificationToken = $('<input name="__RequestVerificationToken" type="hidden" value="97GEfQlz3utHr4bvn1j-Mc_R3ColnW8MSkV-8YjinJ-Y1MAcVP9XKcju5ePwSB0srfOHM1z-MIewXTGQ4BvioEnOY6FzQcyjJ3dcrRHG1HSxiqiY0" />').val();
+        };
+    </script>
+
+    <script src="/Scripts/Default/CMSCommon.js?v=63688688113" type="text/javascript"></script>
+    <script src="/Scripts/Default/AjaxCommon.js?v=63688688113" type="text/javascript"></script>
+    <form action="#" method="post" id="form1">
+
+    </form>
+
+    <div class="header-container">
+        <div class="main-header">
+            <div class="site-container">
+                <div class="logo">
+                    <img src="/media/siteimages/better-logo.png" alt="Better Logo" />
+                </div>
+            </div>
+        </div>
+        <div class="navigation-header">
+            <div class="site-container">
+                <div id="menu">
+
+
+                    <ul>
+                        <li><a href="/east_greenwich/Account/Logout"><span>Log Out</span></a></li>
+                    </ul>
+
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="site-container">
+
+
+
+
+            <div id="left">
+                <div id="submenu">
+
+
+
+                    <ul>
+                        <!-- START: BOOKINGS /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ -->
+
+                        <li>
+                            <h2>Bookings</h2>
+                        </li>
+                        <li><a href="/east_greenwich/BookingsCentre/Index">Make a Booking</a></li>
+                        <li><a href="/east_greenwich/BookingsCentre/MyBookings">View My Bookings</a></li>
+
+                        <!-- END: BOOKINGS /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ -->
+
+                        <!-- START: ONLINE TICKETING /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ -->
+                        <li>
+                            <h2>Activity Tickets</h2>
+                        </li>
+
+
+
+                        <li>
+                            <a href="/east_greenwich/onlineticketing/browse">Browse Tickets</a>
+                        </li>
+
+                        <!-- END: ONLINE TICKETING /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\-->
+
+                        <!-- START: MEMBERSHIP /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\-->
+                        <li>
+                            <h2>Memberships</h2>
+                        </li>
+                        <li><a href="/east_greenwich/Account/MyMemberships">My Membership</a></li>
+
+                        <li><a href="/east_greenwich/Account/UnlinkMembership">Unlink My Membership</a></li>
+
+
+
+                        <li><a href="/east_greenwich/ManageEligibilityDocuments">View My Document(s) </a></li>
+
+                        <!-- END: MEMBERSHIP /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ -->
+
+                        <!-- START: ACCOUNT /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ -->
+                        <li>
+                            <h2>Account</h2>
+                        </li>
+                        <li><a href="/east_greenwich/Account/Logout">Log Out</a></li>
+                        <li><a href="/east_greenwich/Account/CSC">My Home</a></li>
+                        <li class='selected'><a href="/east_greenwich/Basket/Index" class='selected'>Basket (1)</a></li>
+                        <li><a href="/east_greenwich/Account/PersonalProfile">My Profile</a></li>
+                        <li><a class="" href="/east_greenwich/billsandpayments">Bills &amp; Payments</a></li>
+
+
+                        <li><a href="/east_greenwich/Account/ChangeUsername">Change My Email</a></li>
+                        <li><a href="/east_greenwich/Account/ChangePassword">Change My Password</a></li>
+
+                        <!-- END: ACCOUNT /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ -->
+
+
+
+                    </ul>
+                </div>
+            </div>
+            <div>
+
+
+
+
+
+                <div class="formOffset">
+                    <div class="formBand">
+                        <img src="/media/siteimages/iconBasket.gif" alt="Basket" />
+                        My Basket
+                    </div>
+                    <div class="formInput">
+                        <div class="fieldSetWrapper">
+
+
+                            <div class="fieldSetTop"></div>
+                            <div class="fieldSetContent">
+                                <fieldset>
+                                    <legend>What's in My Basket? </legend>
+
+                                    <div>
+                                        <em>We strongly recommend that members check that all confirmed bookings are
+                                            visible in &lsquo;my bookings&rsquo;.<br />Please contact your home leisure
+                                            centre should your confirmed booking not appear.</em>
+                                    </div>
+
+                                    <div>
+                                        <div id="basketStageIndicator" style="background-position: 50% -98px;"></div>
+                                    </div>
+
+
+
+                                    <div>
+                                        <div class='basketItem'>
+                                            <table>
+                                                <tr>
+                                                    <td class='col1'>Booking: Creche Over 2's - Two hours (Greenwich
+                                                        Centre)</td>
+                                                    <td class='alignRight'>£4.10<br /><a
+                                                            onclick="$(this).html('Processing...');"
+                                                            href='/east_greenwich/Basket/AllocateBookingCredit?reservationId=49596702'>Use
+                                                            Voucher</a><br /><br /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>26 March 2019 11:30 - 13:30</td>
+                                                    <td class='alignRight'><a onclick="$(this).html('Processing...');"
+                                                            href='/east_greenwich/Basket/RemoveBooking?bookingId=33634603'>Remove
+                                                            Item</a></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+
+
+
+
+
+
+
+
+
+
+                                    </div>
+
+
+
+                                    <div class="formSubmit" id="totalAmount">
+                                        <table class="table100">
+
+
+                                            <tr>
+                                                <td style="text-align: left;">Total Outstanding:
+                                                </td>
+                                                <td style="text-align: right;"><strong>£4.10</strong></td>
+                                            </tr>
+
+                                        </table>
+                                    </div>
+
+                                    <div>
+
+                                        <div class="formSubmit">
+
+
+                                            <div class='basketButtonWrapper '>
+
+                                                <a id="btnPayNow" onclick="updatePayButton();"
+                                                    href="/east_greenwich/Basket/Pay" class="MembersButton"
+                                                    target="_top">Pay by Card</a>
+                                                <h4>Pay by Card</h4>
+                                                <p>There is a charge for your basket, click <b class='TextMembers'>'Pay
+                                                        by Card'</b> to proceed.</p>
+                                                <hr />
+                                            </div>
+
+
+                                            <div class="basketButtonWrapper " style="height: 100px;">
+
+
+                                                <div
+                                                    style="width: 30%; float: right; text-align: right; overflow: hidden;">
+
+                                                    <!-- TODO: set correct link -->
+
+
+                                                    <a id="btnCommercePayNow" onclick="updatePayCardCommerceButton();"
+                                                        href="/east_greenwich/cardcommerce/Pay" class="MembersButton"
+                                                        style="text-transform: none; float: none;" target="_top">theMET
+                                                        Card</a>
+                                                </div>
+                                                <div style="width: 60%;">
+                                                    <h4>Pay by theMET Card</h4>
+                                                    <p>There is a charge for your basket, click <b
+                                                            class='TextMembers'>'theMET Card'</b> to proceed.</p>
+                                                </div>
+                                                <hr style="margin-top: 40px; width: 100%;" />
+
+
+                                            </div>
+
+
+                                            <script type="text/javascript">
+                                                function updatePayButton() {
+                                                    // hide the old button and replace it with a dummy button to avoid double clicking
+                                                    $("#btnPayNow").hide();
+                                                    $("#btnPayNow").after("<a href='#' onclick='return false;' class='MembersButton'>Processing...</a>");
+                                                }
+                                            </script>
+
+
+                                        </div>
+
+                                    </div>
+
+
+                                </fieldset>
+                            </div>
+                            <div class="fieldSetBottom"></div>
+
+                        </div>
+
+
+                    </div>
+                    <div class="formFooterBand"></div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <div class="footer-container">
+        <div class="site-container">
+            <div class="footer-details">
+                <div class="column-one">
+                    <section class="footer-about">
+                        <h1 class="eta bold-weight">About Better</h1>
+                        <ul>
+                            <li class="eta"><a
+                                    href="/Enterprise/account/Terms?keepThis=true&amp;TB_iframe=true&amp;height=400&amp;width=800&amp;modal=true">Terms
+                                    &amp; Conditions</a></li>
+                            <li class="eta"><a href="/east_greenwich/Privacy-Policy" target="_blank">Privacy Notice</a>
+                            </li>
+                            <li class="eta"><a href="http://www.gll.org" style="text-transform: initial;"
+                                    target="_blank">GLL.org</a></li>
+                        </ul>
+                    </section>
+                </div>
+                <div class="column-two">
+                    <section class="footer-social">
+                        <h1 class="eta bold-weight">Better on Social</h1>
+                        <ul>
+                            <li class="twitter"><a class="icon icon-twitter"
+                                    href="https://twitter.com/better_uk"><span>@BETTER</span> </a></li>
+                            <li class="facebook"><a class="icon icon-facebook"
+                                    href="https://www.facebook.com/BetterUK/?fref=ts"
+                                    style="background-position: 41px 0px;"><span>Facebook.com/better</span> </a></li>
+                        </ul><a class="icon" href="http://www.socialenterprise.org.uk/"><img alt=""
+                                src="/Enterprise/resource/image/621e1215-00c2-4e3b-8dfd-6c4d782d2e41"
+                                style="width: 116px; height: 116px;" /></a><br /><span
+                            class="icon icon-big-society"><span>Big Society Awards</span> </span>
+                    </section>
+                </div>
+            </div>
+        </div>
+        <div class="footer-footer">
+            <div class="site-container">
+                <small class="iota"> Better is a registered trademark and trading name of GLL (Greenwich Leisure
+                    Limited), a charitable social enterprise and registered society under the Co-operative &amp;
+                    Community Benefit &amp; Societies Act 2014 registration no. 27793R. Registered office: Middlegate
+                    House, The Royal Arsenal, London, SE18 6SX. Inland Revenue Charity no: XR43398 VAT registration no:
+                    219749179. </small>
+            </div>
+        </div>
+    </div>
+
+    <form>
+
+    </form>
+
+</body>
+
+</html>

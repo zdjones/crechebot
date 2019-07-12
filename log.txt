@@ -1,0 +1,429 @@
+Login response status code:  200
+Posted club to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/behaviours
+Posted activity category to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activities
+Posted activity to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activitySelect
+Posted Timetable button to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/TimeTable
+Got Timetable subdocument from https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/Timetable?KeepThis=true&
+Found booking slot slot6124333
+Requesting to add booking to https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/AddSportsHallBooking?ajax=0.6046602879796196&selectedCourts=&slotId=6124333
+Recieved json: {"Success":true,"AllowRetry":false,"Message":"Booking added to basket","StartTime":"\/Date(1554978600000)\/","EndTime":"\/Date(1554985800000)\/","FacilityName":"Greenwich Centre","ActivityName":"Creche Over 2\u0027s - Two hours ","ResourceLocation":null}
+Booking added to basket = true
+Requesting basket https://better.legendonlineservices.co.uk/east_greenwich/Basket/Index
+Found Voucher link to /east_greenwich/Basket/AllocateBookingCredit?reservationId=49780817
+Applying Voucher https://better.legendonlineservices.co.uk/east_greenwich/Basket/AllocateBookingCredit?reservationId=49780817
+Completing Transaction (Pay zero balance and confirm booking) https://better.legendonlineservices.co.uk/east_greenwich/Basket/Pay
+2019/03/29 22:00:01 Get https://better.legendonlineservices.co.uk/east_greenwich/account/login: dial tcp: lookup better.legendonlineservices.co.uk: no such host
+Login response status code:  200
+Posted club to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/behaviours
+Posted activity category to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activities
+Posted activity to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activitySelect
+Posted Timetable button to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/TimeTable
+Got Timetable subdocument from https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/Timetable?KeepThis=true&
+Found booking slot slot6264839
+Requesting to add booking to https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/AddSportsHallBooking?ajax=0.6046602879796196&selectedCourts=&slotId=6264839
+Recieved json: {"Success":true,"AllowRetry":false,"Message":"Booking added to basket","StartTime":"\/Date(1555324200000)\/","EndTime":"\/Date(1555331400000)\/","FacilityName":"Greenwich Centre","ActivityName":"Creche Over 2\u0027s - Two hours ","ResourceLocation":null}
+Booking added to basket = true
+Requesting basket https://better.legendonlineservices.co.uk/east_greenwich/Basket/Index
+Found Voucher link to /east_greenwich/Basket/AllocateBookingCredit?reservationId=49872764
+Applying Voucher https://better.legendonlineservices.co.uk/east_greenwich/Basket/AllocateBookingCredit?reservationId=49872764
+Completing Transaction (Pay zero balance and confirm booking) https://better.legendonlineservices.co.uk/east_greenwich/Basket/Pay
+Login response status code:  200
+Posted club to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/behaviours
+Posted activity category to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activities
+Posted activity to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activitySelect
+Posted Timetable button to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/TimeTable
+Got Timetable subdocument from https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/Timetable?KeepThis=true&
+Found booking slot slot6277877
+Requesting to add booking to https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/AddSportsHallBooking?ajax=0.6046602879796196&selectedCourts=&slotId=6277877
+Recieved json: {"Success":true,"AllowRetry":false,"Message":"Booking added to basket","StartTime":"\/Date(1555410600000)\/","EndTime":"\/Date(1555417800000)\/","FacilityName":"Greenwich Centre","ActivityName":"Creche Over 2\u0027s - Two hours ","ResourceLocation":null}
+Booking added to basket = true
+Requesting basket https://better.legendonlineservices.co.uk/east_greenwich/Basket/Index
+Found Voucher link to /east_greenwich/Basket/AllocateBookingCredit?reservationId=49906453
+Applying Voucher https://better.legendonlineservices.co.uk/east_greenwich/Basket/AllocateBookingCredit?reservationId=49906453
+Completing Transaction (Pay zero balance and confirm booking) https://better.legendonlineservices.co.uk/east_greenwich/Basket/Pay
+Login response status code:  200
+Posted club to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/behaviours
+Posted activity category to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activities
+Posted activity to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activitySelect
+Posted Timetable button to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/TimeTable
+Got Timetable subdocument from https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/Timetable?KeepThis=true&
+Found booking slot slot6305088
+Requesting to add booking to https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/AddSportsHallBooking?ajax=0.6046602879796196&selectedCourts=&slotId=6305088
+Recieved json: {"Success":true,"AllowRetry":false,"Message":"Booking added to basket","StartTime":"\/Date(1555497000000)\/","EndTime":"\/Date(1555504200000)\/","FacilityName":"Greenwich Centre","ActivityName":"Creche Over 2\u0027s - Two hours ","ResourceLocation":null}
+Booking added to basket = true
+Requesting basket https://better.legendonlineservices.co.uk/east_greenwich/Basket/Index
+Found Voucher link to /east_greenwich/Basket/AllocateBookingCredit?reservationId=49937492
+Applying Voucher https://better.legendonlineservices.co.uk/east_greenwich/Basket/AllocateBookingCredit?reservationId=49937492
+Completing Transaction (Pay zero balance and confirm booking) https://better.legendonlineservices.co.uk/east_greenwich/Basket/Pay
+2019/04/03 22:00:32 Get https://better.legendonlineservices.co.uk/east_greenwich/Basket/Pay: dial tcp 89.248.63.131:443: connect: connection refused
+Login response status code:  200
+Posted club to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/behaviours
+Posted activity category to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activities
+Posted activity to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activitySelect
+Posted Timetable button to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/TimeTable
+Got Timetable subdocument from https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/Timetable?KeepThis=true&
+Found booking slot slot6277877
+Requesting to add booking to https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/AddSportsHallBooking?ajax=0.6046602879796196&selectedCourts=&slotId=6277877
+Recieved json: {"Success":true,"AllowRetry":false,"Message":"Booking added to basket","StartTime":"\/Date(1555410600000)\/","EndTime":"\/Date(1555417800000)\/","FacilityName":"Greenwich Centre","ActivityName":"Creche Over 2\u0027s - Two hours ","ResourceLocation":null}
+Booking added to basket = true
+Requesting basket https://better.legendonlineservices.co.uk/east_greenwich/Basket/Index
+Applying Voucher https://better.legendonlineservices.co.uk
+Completing Transaction (Pay zero balance and confirm booking) https://better.legendonlineservices.co.uk/east_greenwich/Basket/Pay
+Login response status code:  200
+Posted club to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/behaviours
+Posted activity category to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activities
+Posted activity to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activitySelect
+Posted Timetable button to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/TimeTable
+Got Timetable subdocument from https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/Timetable?KeepThis=true&
+Found booking slot slot6372694
+Requesting to add booking to https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/AddSportsHallBooking?ajax=0.6046602879796196&selectedCourts=&slotId=6372694
+Recieved json: {"Success":true,"AllowRetry":false,"Message":"Booking added to basket","StartTime":"\/Date(1555669800000)\/","EndTime":"\/Date(1555677000000)\/","FacilityName":"Greenwich Centre","ActivityName":"Creche Over 2\u0027s - Two hours ","ResourceLocation":null}
+Booking added to basket = true
+Requesting basket https://better.legendonlineservices.co.uk/east_greenwich/Basket/Index
+Found Voucher link to /east_greenwich/Basket/AllocateBookingCredit?reservationId=49990291
+Applying Voucher https://better.legendonlineservices.co.uk/east_greenwich/Basket/AllocateBookingCredit?reservationId=49990291
+Completing Transaction (Pay zero balance and confirm booking) https://better.legendonlineservices.co.uk/east_greenwich/Basket/Pay
+2019/04/08 22:34:54 Get https://better.legendonlineservices.co.uk/east_greenwich/account/login: dial tcp: lookup better.legendonlineservices.co.uk on 127.0.0.53:53: server misbehaving
+Login response status code:  200
+Posted club to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/behaviours
+Posted activity category to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activities
+Posted activity to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activitySelect
+Posted Timetable button to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/TimeTable
+Got Timetable subdocument from https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/Timetable?KeepThis=true&
+Found booking slot slot6492682
+Requesting to add booking to https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/AddSportsHallBooking?ajax=0.5152126285020654&selectedCourts=&slotId=6492682
+Recieved json: {"Success":true,"AllowRetry":false,"Message":"Booking added to basket","StartTime":"\/Date(1556015400000)\/","EndTime":"\/Date(1556022600000)\/","FacilityName":"Greenwich Centre","ActivityName":"Creche Over 2\u0027s - Two hours ","ResourceLocation":null}
+Booking added to basket = true
+Requesting basket https://better.legendonlineservices.co.uk/east_greenwich/Basket/Index
+Found Voucher link to /east_greenwich/Basket/AllocateBookingCredit?reservationId=50080629
+Applying Voucher https://better.legendonlineservices.co.uk/east_greenwich/Basket/AllocateBookingCredit?reservationId=50080629
+Completing Transaction (Pay zero balance and confirm booking) https://better.legendonlineservices.co.uk/east_greenwich/Basket/Pay
+Login response status code:  200
+Posted club to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/behaviours
+Posted activity category to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activities
+Posted activity to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activitySelect
+Posted Timetable button to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/TimeTable
+Got Timetable subdocument from https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/Timetable?KeepThis=true&
+Found booking slot slot6529004
+Requesting to add booking to https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/AddSportsHallBooking?ajax=0.8136399609900968&selectedCourts=&slotId=6529004
+Recieved json: {"Success":true,"AllowRetry":false,"Message":"Booking added to basket","StartTime":"\/Date(1556101800000)\/","EndTime":"\/Date(1556109000000)\/","FacilityName":"Greenwich Centre","ActivityName":"Creche Over 2\u0027s - Two hours ","ResourceLocation":null}
+Booking added to basket = true
+Requesting basket https://better.legendonlineservices.co.uk/east_greenwich/Basket/Index
+Found Voucher link to /east_greenwich/Basket/AllocateBookingCredit?reservationId=50108265
+Applying Voucher https://better.legendonlineservices.co.uk/east_greenwich/Basket/AllocateBookingCredit?reservationId=50108265
+Completing Transaction (Pay zero balance and confirm booking) https://better.legendonlineservices.co.uk/east_greenwich/Basket/Pay
+Login response status code:  200
+Posted club to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/behaviours
+Posted activity category to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activities
+Posted activity to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activitySelect
+Posted Timetable button to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/TimeTable
+Got Timetable subdocument from https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/Timetable?KeepThis=true&
+Found booking slot slot6585727
+Requesting to add booking to https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/AddSportsHallBooking?ajax=0.5152126285020654&selectedCourts=&slotId=6585727
+Recieved json: {"Success":true,"AllowRetry":false,"Message":"Booking added to basket","StartTime":"\/Date(1556274600000)\/","EndTime":"\/Date(1556281800000)\/","FacilityName":"Greenwich Centre","ActivityName":"Creche Over 2\u0027s - Two hours ","ResourceLocation":null}
+Booking added to basket = true
+Requesting basket https://better.legendonlineservices.co.uk/east_greenwich/Basket/Index
+Found Voucher link to /east_greenwich/Basket/AllocateBookingCredit?reservationId=50157055
+Applying Voucher https://better.legendonlineservices.co.uk/east_greenwich/Basket/AllocateBookingCredit?reservationId=50157055
+Completing Transaction (Pay zero balance and confirm booking) https://better.legendonlineservices.co.uk/east_greenwich/Basket/Pay
+Login response status code:  200
+Posted club to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/behaviours
+Posted activity category to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activities
+Posted activity to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activitySelect
+Posted Timetable button to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/TimeTable
+Got Timetable subdocument from https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/Timetable?KeepThis=true&
+Found booking slot slot6711773
+Requesting to add booking to https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/AddSportsHallBooking?ajax=0.5152126285020654&selectedCourts=&slotId=6711773
+Recieved json: {"Success":true,"AllowRetry":false,"Message":"Booking added to basket","StartTime":"\/Date(1556620200000)\/","EndTime":"\/Date(1556627400000)\/","FacilityName":"Greenwich Centre","ActivityName":"Creche Over 2\u0027s - Two hours ","ResourceLocation":null}
+Booking added to basket = true
+Requesting basket https://better.legendonlineservices.co.uk/east_greenwich/Basket/Index
+Found Voucher link to /east_greenwich/Basket/AllocateBookingCredit?reservationId=50248039
+Applying Voucher https://better.legendonlineservices.co.uk/east_greenwich/Basket/AllocateBookingCredit?reservationId=50248039
+Completing Transaction (Pay zero balance and confirm booking) https://better.legendonlineservices.co.uk/east_greenwich/Basket/Pay
+2019/04/16 22:00:18 Get https://better.legendonlineservices.co.uk/east_greenwich/Basket/Pay: dial tcp 89.248.63.131:443: connect: connection refused
+Login response status code:  200
+Posted club to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/behaviours
+Posted activity category to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activities
+Posted activity to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activitySelect
+Posted Timetable button to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/TimeTable
+Got Timetable subdocument from https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/Timetable?KeepThis=true&
+Found booking slot slot6789995
+Requesting to add booking to https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/AddSportsHallBooking?ajax=0.8136399609900968&selectedCourts=&slotId=6789995
+Recieved json: {"Success":true,"AllowRetry":false,"Message":"Booking added to basket","StartTime":"\/Date(1556879400000)\/","EndTime":"\/Date(1556886600000)\/","FacilityName":"Greenwich Centre","ActivityName":"Creche Over 2\u0027s - Two hours ","ResourceLocation":null}
+Booking added to basket = true
+Requesting basket https://better.legendonlineservices.co.uk/east_greenwich/Basket/Index
+Found Voucher link to /east_greenwich/Basket/AllocateBookingCredit?reservationId=50312868
+Applying Voucher https://better.legendonlineservices.co.uk/east_greenwich/Basket/AllocateBookingCredit?reservationId=50312868
+Completing Transaction (Pay zero balance and confirm booking) https://better.legendonlineservices.co.uk/east_greenwich/Basket/Pay
+Login response status code:  200
+Posted club to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/behaviours
+Posted activity category to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activities
+Posted activity to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activitySelect
+Posted Timetable button to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/TimeTable
+Got Timetable subdocument from https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/Timetable?KeepThis=true&
+Found booking slot slot6872381
+Requesting to add booking to https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/AddSportsHallBooking?ajax=0.8136399609900968&selectedCourts=&slotId=6872381
+Recieved json: {"Success":true,"AllowRetry":false,"Message":"Booking added to basket","StartTime":"\/Date(1557138600000)\/","EndTime":"\/Date(1557145800000)\/","FacilityName":"Greenwich Centre","ActivityName":"Creche Over 2\u0027s - Two hours ","ResourceLocation":null}
+Booking added to basket = true
+Requesting basket https://better.legendonlineservices.co.uk/east_greenwich/Basket/Index
+Found Voucher link to /east_greenwich/Basket/AllocateBookingCredit?reservationId=50356181
+Applying Voucher https://better.legendonlineservices.co.uk/east_greenwich/Basket/AllocateBookingCredit?reservationId=50356181
+Completing Transaction (Pay zero balance and confirm booking) https://better.legendonlineservices.co.uk/east_greenwich/Basket/Pay
+Login response status code:  200
+Posted club to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/behaviours
+Posted activity category to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activities
+Posted activity to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activitySelect
+Posted Timetable button to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/TimeTable
+Got Timetable subdocument from https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/Timetable?KeepThis=true&
+Found booking slot slot6920500
+Requesting to add booking to https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/AddSportsHallBooking?ajax=0.5152126285020654&selectedCourts=&slotId=6920500
+Recieved json: {"Success":true,"AllowRetry":false,"Message":"Booking added to basket","StartTime":"\/Date(1557225000000)\/","EndTime":"\/Date(1557232200000)\/","FacilityName":"Greenwich Centre","ActivityName":"Creche Over 2\u0027s - Two hours ","ResourceLocation":null}
+Booking added to basket = true
+Requesting basket https://better.legendonlineservices.co.uk/east_greenwich/Basket/Index
+Found Voucher link to /east_greenwich/Basket/AllocateBookingCredit?reservationId=50385899
+Applying Voucher https://better.legendonlineservices.co.uk/east_greenwich/Basket/AllocateBookingCredit?reservationId=50385899
+Completing Transaction (Pay zero balance and confirm booking) https://better.legendonlineservices.co.uk/east_greenwich/Basket/Pay
+2019/04/23 22:00:19 Get https://better.legendonlineservices.co.uk/east_greenwich/Basket/Pay: dial tcp 89.248.63.131:443: connect: connection refused
+Login response status code:  200
+2019/04/24 22:00:32 Post https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/behaviours: dial tcp 89.248.63.131:443: connect: connection refused
+Login response status code:  200
+Posted club to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/behaviours
+Posted activity category to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activities
+Posted activity to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activitySelect
+Posted Timetable button to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/TimeTable
+Got Timetable subdocument from https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/Timetable?KeepThis=true&
+Found booking slot slot6962384
+Requesting to add booking to https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/AddSportsHallBooking?ajax=0.5152126285020654&selectedCourts=&slotId=6962384
+Recieved json: {"Success":true,"AllowRetry":false,"Message":"Booking added to basket","StartTime":"\/Date(1557397800000)\/","EndTime":"\/Date(1557405000000)\/","FacilityName":"Greenwich Centre","ActivityName":"Creche Over 2\u0027s - Two hours ","ResourceLocation":null}
+Booking added to basket = true
+Requesting basket https://better.legendonlineservices.co.uk/east_greenwich/Basket/Index
+Found Voucher link to /east_greenwich/Basket/AllocateBookingCredit?reservationId=50444168
+Applying Voucher https://better.legendonlineservices.co.uk/east_greenwich/Basket/AllocateBookingCredit?reservationId=50444168
+Completing Transaction (Pay zero balance and confirm booking) https://better.legendonlineservices.co.uk/east_greenwich/Basket/Pay
+Login response status code:  200
+Posted club to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/behaviours
+Posted activity category to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activities
+Posted activity to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activitySelect
+Posted Timetable button to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/TimeTable
+Got Timetable subdocument from https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/Timetable?KeepThis=true&
+Found booking slot slot7021085
+Requesting to add booking to https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/AddSportsHallBooking?ajax=0.5152126285020654&selectedCourts=&slotId=7021085
+Recieved json: {"Success":true,"AllowRetry":false,"Message":"Booking added to basket","StartTime":"\/Date(1557484200000)\/","EndTime":"\/Date(1557491400000)\/","FacilityName":"Greenwich Centre","ActivityName":"Creche Over 2\u0027s - Two hours ","ResourceLocation":null}
+Booking added to basket = true
+Requesting basket https://better.legendonlineservices.co.uk/east_greenwich/Basket/Index
+Found Voucher link to /east_greenwich/Basket/AllocateBookingCredit?reservationId=50468593
+Applying Voucher https://better.legendonlineservices.co.uk/east_greenwich/Basket/AllocateBookingCredit?reservationId=50468593
+Completing Transaction (Pay zero balance and confirm booking) https://better.legendonlineservices.co.uk/east_greenwich/Basket/Pay
+2019/04/29 22:00:01 Get https://better.legendonlineservices.co.uk/east_greenwich/account/login: dial tcp: lookup better.legendonlineservices.co.uk on 127.0.0.53:53: server misbehaving
+Login response status code:  200
+Posted club to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/behaviours
+Posted activity category to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activities
+Posted activity to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activitySelect
+Posted Timetable button to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/TimeTable
+Got Timetable subdocument from https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/Timetable?KeepThis=true&
+Found booking slot slot7125166
+Requesting to add booking to https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/AddSportsHallBooking?ajax=0.5152126285020654&selectedCourts=&slotId=7125166
+Recieved json: {"Success":true,"AllowRetry":false,"Message":"Booking added to basket","StartTime":"\/Date(1557829800000)\/","EndTime":"\/Date(1557837000000)\/","FacilityName":"Greenwich Centre","ActivityName":"Creche Over 2\u0027s - Two hours ","ResourceLocation":null}
+Booking added to basket = true
+Requesting basket https://better.legendonlineservices.co.uk/east_greenwich/Basket/Index
+Found Voucher link to /east_greenwich/Basket/AllocateBookingCredit?reservationId=50563946
+Applying Voucher https://better.legendonlineservices.co.uk/east_greenwich/Basket/AllocateBookingCredit?reservationId=50563946
+Completing Transaction (Pay zero balance and confirm booking) https://better.legendonlineservices.co.uk/east_greenwich/Basket/Pay
+Login response status code:  200
+Posted club to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/behaviours
+Posted activity category to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activities
+Posted activity to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activitySelect
+Posted Timetable button to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/TimeTable
+Got Timetable subdocument from https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/Timetable?KeepThis=true&
+Found booking slot slot7138100
+Requesting to add booking to https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/AddSportsHallBooking?ajax=0.8136399609900968&selectedCourts=&slotId=7138100
+Recieved json: {"Success":true,"AllowRetry":false,"Message":"Booking added to basket","StartTime":"\/Date(1557916200000)\/","EndTime":"\/Date(1557923400000)\/","FacilityName":"Greenwich Centre","ActivityName":"Creche Over 2\u0027s - Two hours ","ResourceLocation":null}
+Booking added to basket = true
+Requesting basket https://better.legendonlineservices.co.uk/east_greenwich/Basket/Index
+Found Voucher link to /east_greenwich/Basket/AllocateBookingCredit?reservationId=50591983
+Applying Voucher https://better.legendonlineservices.co.uk/east_greenwich/Basket/AllocateBookingCredit?reservationId=50591983
+Completing Transaction (Pay zero balance and confirm booking) https://better.legendonlineservices.co.uk/east_greenwich/Basket/Pay
+2019/05/01 22:00:24 Get https://better.legendonlineservices.co.uk/east_greenwich/Basket/Pay: dial tcp 89.248.63.131:443: connect: connection refused
+Login response status code:  200
+Posted club to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/behaviours
+Posted activity category to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activities
+Posted activity to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activitySelect
+Posted Timetable button to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/TimeTable
+Got Timetable subdocument from https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/Timetable?KeepThis=true&
+Found booking slot slot7335285
+Requesting to add booking to https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/AddSportsHallBooking?ajax=0.5152126285020654&selectedCourts=&slotId=7335285
+Recieved json: {"Success":true,"AllowRetry":false,"Message":"Booking added to basket","StartTime":"\/Date(1558434600000)\/","EndTime":"\/Date(1558441800000)\/","FacilityName":"Greenwich Centre","ActivityName":"Creche Over 2\u0027s - Two hours ","ResourceLocation":null}
+Booking added to basket = true
+Requesting basket https://better.legendonlineservices.co.uk/east_greenwich/Basket/Index
+Found Voucher link to /east_greenwich/Basket/AllocateBookingCredit?reservationId=50725159
+Applying Voucher https://better.legendonlineservices.co.uk/east_greenwich/Basket/AllocateBookingCredit?reservationId=50725159
+Completing Transaction (Pay zero balance and confirm booking) https://better.legendonlineservices.co.uk/east_greenwich/Basket/Pay
+Login response status code:  200
+Posted club to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/behaviours
+Posted activity category to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activities
+Posted activity to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activitySelect
+Posted Timetable button to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/TimeTable
+Got Timetable subdocument from https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/Timetable?KeepThis=true&
+Found booking slot slot7366356
+Requesting to add booking to https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/AddSportsHallBooking?ajax=0.8136399609900968&selectedCourts=&slotId=7366356
+Recieved json: {"Success":true,"AllowRetry":false,"Message":"Booking added to basket","StartTime":"\/Date(1558521000000)\/","EndTime":"\/Date(1558528200000)\/","FacilityName":"Greenwich Centre","ActivityName":"Creche Over 2\u0027s - Two hours ","ResourceLocation":null}
+Booking added to basket = true
+Requesting basket https://better.legendonlineservices.co.uk/east_greenwich/Basket/Index
+Found Voucher link to /east_greenwich/Basket/AllocateBookingCredit?reservationId=50754474
+Applying Voucher https://better.legendonlineservices.co.uk/east_greenwich/Basket/AllocateBookingCredit?reservationId=50754474
+Completing Transaction (Pay zero balance and confirm booking) https://better.legendonlineservices.co.uk/east_greenwich/Basket/Pay
+Login response status code:  200
+Posted club to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/behaviours
+Posted activity category to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activities
+Posted activity to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activitySelect
+Posted Timetable button to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/TimeTable
+Got Timetable subdocument from https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/Timetable?KeepThis=true&
+Found booking slot slot7399616
+Requesting to add booking to https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/AddSportsHallBooking?ajax=0.5152126285020654&selectedCourts=&slotId=7399616
+Recieved json: {"Success":true,"AllowRetry":false,"Message":"Booking added to basket","StartTime":"\/Date(1558607400000)\/","EndTime":"\/Date(1558614600000)\/","FacilityName":"Greenwich Centre","ActivityName":"Creche Over 2\u0027s - Two hours ","ResourceLocation":null}
+Booking added to basket = true
+Requesting basket https://better.legendonlineservices.co.uk/east_greenwich/Basket/Index
+Found Voucher link to /east_greenwich/Basket/AllocateBookingCredit?reservationId=50783110
+Applying Voucher https://better.legendonlineservices.co.uk/east_greenwich/Basket/AllocateBookingCredit?reservationId=50783110
+Completing Transaction (Pay zero balance and confirm booking) https://better.legendonlineservices.co.uk/east_greenwich/Basket/Pay
+Login response status code:  200
+Posted club to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/behaviours
+Posted activity category to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activities
+Posted activity to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activitySelect
+Posted Timetable button to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/TimeTable
+Got Timetable subdocument from https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/Timetable?KeepThis=true&
+Found booking slot slot7417059
+Requesting to add booking to https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/AddSportsHallBooking?ajax=0.5152126285020654&selectedCourts=&slotId=7417059
+Recieved json: {"Success":true,"AllowRetry":false,"Message":"Booking added to basket","StartTime":"\/Date(1558693800000)\/","EndTime":"\/Date(1558701000000)\/","FacilityName":"Greenwich Centre","ActivityName":"Creche Over 2\u0027s - Two hours ","ResourceLocation":null}
+Booking added to basket = true
+Requesting basket https://better.legendonlineservices.co.uk/east_greenwich/Basket/Index
+Found Voucher link to /east_greenwich/Basket/AllocateBookingCredit?reservationId=50806197
+Applying Voucher https://better.legendonlineservices.co.uk/east_greenwich/Basket/AllocateBookingCredit?reservationId=50806197
+Completing Transaction (Pay zero balance and confirm booking) https://better.legendonlineservices.co.uk/east_greenwich/Basket/Pay
+Login response status code:  200
+Posted club to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/behaviours
+Posted activity category to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activities
+Posted activity to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activitySelect
+Posted Timetable button to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/TimeTable
+Got Timetable subdocument from https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/Timetable?KeepThis=true&
+Found booking slot slot7498695
+Requesting to add booking to https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/AddSportsHallBooking?ajax=0.5152126285020654&selectedCourts=&slotId=7498695
+Recieved json: {"Success":true,"AllowRetry":false,"Message":"Booking added to basket","StartTime":"\/Date(1558953000000)\/","EndTime":"\/Date(1558960200000)\/","FacilityName":"Greenwich Centre","ActivityName":"Creche Over 2\u0027s - Two hours ","ResourceLocation":null}
+Booking added to basket = true
+Requesting basket https://better.legendonlineservices.co.uk/east_greenwich/Basket/Index
+Found Voucher link to /east_greenwich/Basket/AllocateBookingCredit?reservationId=50868295
+Applying Voucher https://better.legendonlineservices.co.uk/east_greenwich/Basket/AllocateBookingCredit?reservationId=50868295
+Completing Transaction (Pay zero balance and confirm booking) https://better.legendonlineservices.co.uk/east_greenwich/Basket/Pay
+Login response status code:  200
+Posted club to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/behaviours
+Posted activity category to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activities
+Posted activity to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activitySelect
+Posted Timetable button to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/TimeTable
+Got Timetable subdocument from https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/Timetable?KeepThis=true&
+Found booking slot slot7542481
+Requesting to add booking to https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/AddSportsHallBooking?ajax=0.5152126285020654&selectedCourts=&slotId=7542481
+Recieved json: {"Success":false,"AllowRetry":false,"Message":"There is no resource left to book. Select a different date and\\or time. (-3)","StartTime":null,"EndTime":null,"FacilityName":null,"ActivityName":null,"ResourceLocation":null}
+Booking added to basket = false
+Requesting basket https://better.legendonlineservices.co.uk/east_greenwich/Basket/Index
+Applying Voucher https://better.legendonlineservices.co.uk
+Completing Transaction (Pay zero balance and confirm booking) https://better.legendonlineservices.co.uk/east_greenwich/Basket/Pay
+Login response status code:  200
+Posted club to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/behaviours
+Posted activity category to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activities
+Posted activity to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activitySelect
+Posted Timetable button to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/TimeTable
+Got Timetable subdocument from https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/Timetable?KeepThis=true&
+Found booking slot slot7553797
+Requesting to add booking to https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/AddSportsHallBooking?ajax=0.5152126285020654&selectedCourts=&slotId=7553797
+Recieved json: {"Success":true,"AllowRetry":false,"Message":"Booking added to basket","StartTime":"\/Date(1559125800000)\/","EndTime":"\/Date(1559133000000)\/","FacilityName":"Greenwich Centre","ActivityName":"Creche Over 2\u0027s - Two hours ","ResourceLocation":null}
+Booking added to basket = true
+Requesting basket https://better.legendonlineservices.co.uk/east_greenwich/Basket/Index
+Found Voucher link to /east_greenwich/Basket/AllocateBookingCredit?reservationId=50920084
+Applying Voucher https://better.legendonlineservices.co.uk/east_greenwich/Basket/AllocateBookingCredit?reservationId=50920084
+Completing Transaction (Pay zero balance and confirm booking) https://better.legendonlineservices.co.uk/east_greenwich/Basket/Pay
+Login response status code:  200
+Posted club to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/behaviours
+Posted activity category to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activities
+Posted activity to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activitySelect
+Posted Timetable button to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/TimeTable
+Got Timetable subdocument from https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/Timetable?KeepThis=true&
+Found booking slot slot7723934
+Requesting to add booking to https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/AddSportsHallBooking?ajax=0.5152126285020654&selectedCourts=&slotId=7723934
+Recieved json: {"Success":true,"AllowRetry":false,"Message":"Booking added to basket","StartTime":"\/Date(1559557800000)\/","EndTime":"\/Date(1559565000000)\/","FacilityName":"Greenwich Centre","ActivityName":"Creche Over 2\u0027s - Two hours ","ResourceLocation":null}
+Booking added to basket = true
+Requesting basket https://better.legendonlineservices.co.uk/east_greenwich/Basket/Index
+Found Voucher link to /east_greenwich/Basket/AllocateBookingCredit?reservationId=51028533
+Applying Voucher https://better.legendonlineservices.co.uk/east_greenwich/Basket/AllocateBookingCredit?reservationId=51028533
+Completing Transaction (Pay zero balance and confirm booking) https://better.legendonlineservices.co.uk/east_greenwich/Basket/Pay
+Login response status code:  200
+Posted club to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/behaviours
+Posted activity category to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activities
+Posted activity to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activitySelect
+Posted Timetable button to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/TimeTable
+Got Timetable subdocument from https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/Timetable?KeepThis=true&
+Found booking slot slot7734134
+Requesting to add booking to https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/AddSportsHallBooking?ajax=0.5152126285020654&selectedCourts=&slotId=7734134
+Recieved json: {"Success":true,"AllowRetry":false,"Message":"Booking added to basket","StartTime":"\/Date(1559644200000)\/","EndTime":"\/Date(1559651400000)\/","FacilityName":"Greenwich Centre","ActivityName":"Creche Over 2\u0027s - Two hours ","ResourceLocation":null}
+Booking added to basket = true
+Requesting basket https://better.legendonlineservices.co.uk/east_greenwich/Basket/Index
+Found Voucher link to /east_greenwich/Basket/AllocateBookingCredit?reservationId=51056300
+Applying Voucher https://better.legendonlineservices.co.uk/east_greenwich/Basket/AllocateBookingCredit?reservationId=51056300
+Completing Transaction (Pay zero balance and confirm booking) https://better.legendonlineservices.co.uk/east_greenwich/Basket/Pay
+Login response status code:  200
+Posted club to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/behaviours
+Posted activity category to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activities
+Posted activity to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activitySelect
+Posted Timetable button to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/TimeTable
+Got Timetable subdocument from https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/Timetable?KeepThis=true&
+Found booking slot slot7799328
+Requesting to add booking to https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/AddSportsHallBooking?ajax=0.5152126285020654&selectedCourts=&slotId=7799328
+Recieved json: {"Success":true,"AllowRetry":false,"Message":"Booking added to basket","StartTime":"\/Date(1559817000000)\/","EndTime":"\/Date(1559824200000)\/","FacilityName":"Greenwich Centre","ActivityName":"Creche Over 2\u0027s - Two hours ","ResourceLocation":null}
+Booking added to basket = true
+Requesting basket https://better.legendonlineservices.co.uk/east_greenwich/Basket/Index
+Found Voucher link to /east_greenwich/Basket/AllocateBookingCredit?reservationId=51106231
+Applying Voucher https://better.legendonlineservices.co.uk/east_greenwich/Basket/AllocateBookingCredit?reservationId=51106231
+Completing Transaction (Pay zero balance and confirm booking) https://better.legendonlineservices.co.uk/east_greenwich/Basket/Pay
+Login response status code:  200
+Posted club to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/behaviours
+Posted activity category to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activities
+Posted activity to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activitySelect
+Posted Timetable button to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/TimeTable
+Got Timetable subdocument from https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/Timetable?KeepThis=true&
+Found booking slot slot7850248
+Requesting to add booking to https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/AddSportsHallBooking?ajax=0.5152126285020654&selectedCourts=&slotId=7850248
+Recieved json: {"Success":true,"AllowRetry":false,"Message":"Booking added to basket","StartTime":"\/Date(1559903400000)\/","EndTime":"\/Date(1559910600000)\/","FacilityName":"Greenwich Centre","ActivityName":"Creche Over 2\u0027s - Two hours ","ResourceLocation":null}
+Booking added to basket = true
+Requesting basket https://better.legendonlineservices.co.uk/east_greenwich/Basket/Index
+Found Voucher link to /east_greenwich/Basket/AllocateBookingCredit?reservationId=51127447
+Applying Voucher https://better.legendonlineservices.co.uk/east_greenwich/Basket/AllocateBookingCredit?reservationId=51127447
+Completing Transaction (Pay zero balance and confirm booking) https://better.legendonlineservices.co.uk/east_greenwich/Basket/Pay
+Login response status code:  200
+Posted club to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/behaviours
+Posted activity category to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activities
+Posted activity to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activitySelect
+Posted Timetable button to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/TimeTable
+Got Timetable subdocument from https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/Timetable?KeepThis=true&
+Found booking slot slot8024761
+Requesting to add booking to https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/AddSportsHallBooking?ajax=0.2142638725823749&selectedCourts=&slotId=8024761
+Recieved json: {"Success":true,"AllowRetry":false,"Message":"Booking added to basket","StartTime":"\/Date(1560421800000)\/","EndTime":"\/Date(1560429000000)\/","FacilityName":"Greenwich Centre","ActivityName":"Creche Over 2\u0027s - Two hours ","ResourceLocation":null}
+Booking added to basket = true
+Requesting basket https://better.legendonlineservices.co.uk/east_greenwich/Basket/Index
+Found Voucher link to /east_greenwich/Basket/AllocateBookingCredit?reservationId=51257560
+Applying Voucher https://better.legendonlineservices.co.uk/east_greenwich/Basket/AllocateBookingCredit?reservationId=51257560
+Completing Transaction (Pay zero balance and confirm booking) https://better.legendonlineservices.co.uk/east_greenwich/Basket/Pay
+2019/06/24 22:00:01 Get https://better.legendonlineservices.co.uk/east_greenwich/account/login: dial tcp: lookup better.legendonlineservices.co.uk on 127.0.0.53:53: server misbehaving
+2019/06/25 22:00:01 Get https://better.legendonlineservices.co.uk/east_greenwich/account/login: dial tcp: lookup better.legendonlineservices.co.uk on 127.0.0.53:53: server misbehaving
+Login response status code:  200
+Posted club to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/behaviours
+Posted activity category to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activities
+Posted activity to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/activitySelect
+Posted Timetable button to https://better.legendonlineservices.co.uk/east_greenwich/bookingscentre/TimeTable
+Got Timetable subdocument from https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/Timetable?KeepThis=true&
+Found booking slot slot8849125
+Requesting to add booking to https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/AddSportsHallBooking?ajax=0.5152126285020654&selectedCourts=&slotId=8849125
+Recieved json: {"Success":true,"AllowRetry":false,"Message":"Booking added to basket","StartTime":"\/Date(1562841000000)\/","EndTime":"\/Date(1562848200000)\/","FacilityName":"Greenwich Centre","ActivityName":"Creche Over 2\u0027s - Two hours ","ResourceLocation":null}
+Booking added to basket = true
+Requesting basket https://better.legendonlineservices.co.uk/east_greenwich/Basket/Index
+Found Voucher link to /east_greenwich/Basket/AllocateBookingCredit?reservationId=51926140
+Applying Voucher https://better.legendonlineservices.co.uk/east_greenwich/Basket/AllocateBookingCredit?reservationId=51926140
+Completing Transaction (Pay zero balance and confirm booking) https://better.legendonlineservices.co.uk/east_greenwich/Basket/Pay
