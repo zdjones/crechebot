@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -9,12 +10,11 @@ import (
 	"net/http"
 	"net/http/cookiejar"
 	"net/url"
-	"os"
 	"strings"
+	"time"
 
 	"github.com/PuerkitoBio/goquery"
 
-	"golang.org/x/net/html"
 	"golang.org/x/net/publicsuffix"
 )
 
@@ -24,20 +24,47 @@ type client struct {
 
 var maxRetries = 10
 
+const (
+	OVER2_1HOUR   = "752" // over 2s, 1 hour = 752
+	OVER2_2HOURS  = "882" // over 2s, 2 hours = 882
+	UNDER2_1HOUR  = "751" // under 2s, 1 hour = 751
+	UNDER2_2HOURS = "883" // under 2s, 2 hours = 883
+)
+
 func main() {
-	if len(os.Args) < 3 {
-		log.Fatalln("Not enough arguments (eg email and pass): ", os.Args)
+	// if len(os.Args) < 3 {
+	// 	log.Fatalln("Not enough arguments (eg email and pass): ", os.Args)
+	// }
+	var under2s bool
+	flag.BoolVar(&under2s, "under2", false, "Book for Under 2s (default is Over 2s)")
+	// long := flag.String("l", flag.Args[1], "long url")
+	// short := flag.String("s", flag.Args[1], "short url")
+	// addr := flag.String("api", flag.Args[2], "API endpoint")
+	flag.Parse()
+
+	if len(flag.Args()) < 2 {
+		log.Fatalln("Not enough arguments (eg email and pass): ", flag.Args())
 	}
-	user := os.Args[1]
-	pass := os.Args[2]
+
+	user := flag.Arg(0)
+	pass := flag.Arg(1)
+
+	// over 2s, 1 hour = 752
+	// over 2s, 2 hours = 882
+	// under 2s, 1 hour = 751
+	// under 2s, 2 hours = 883
+	var crecheType string
+	if under2s {
+		crecheType = UNDER2_2HOURS
+	} else {
+		crecheType = OVER2_2HOURS
+	}
 
 	c := newClient()
 	c.login(user, pass)
 	c.selectCentre()
 	c.selectActivityCreche()
-	// over 2s, 2 hours = 882
-	// under 2s, 2 hours = 752
-	c.selectCrecheType("882")
+	c.selectCrecheType(crecheType)
 	c.addBooking()
 	c.applyVoucher()
 	c.complete()
@@ -68,6 +95,7 @@ func (c *client) login(user, pass string) {
 		if err == nil && res.StatusCode == 200 {
 			break
 		}
+		log.Printf("Failed attempt at %s. StatusCode %d, error: %s", u.Path, res.StatusCode, err)
 		if attempt >= maxRetries {
 			log.Fatalf("Too many failed attempts, giving up (%s): %s", u.String(), err)
 		}
@@ -93,6 +121,7 @@ func (c *client) login(user, pass string) {
 			fmt.Println("Login resonse status code: ", res.StatusCode)
 			break
 		}
+		log.Printf("Failed attempt at %s. StatusCode %d, error: %s", u.Path, res.StatusCode, err)
 		if attempt >= maxRetries {
 			log.Fatalf("Too many failed attempts, giving up (%s): %s", u.String(), err)
 		}
@@ -116,6 +145,7 @@ func (c *client) selectCentre() {
 			fmt.Println("Posted club to", u.String())
 			break
 		}
+		log.Printf("Failed attempt at %s. StatusCode %d, error: %s", u.Path, res.StatusCode, err)
 		if attempt >= maxRetries {
 			log.Fatalf("Too many failed attempts, giving up (%s): %s", u.String(), err)
 		}
@@ -141,6 +171,7 @@ func (c *client) selectActivityCreche() {
 			fmt.Println("Posted activity category to", u.String())
 			break
 		}
+		log.Printf("Failed attempt at %s. StatusCode %d, error: %s", u.Path, res.StatusCode, err)
 		if attempt >= maxRetries {
 			log.Fatalf("Too many failed attempts, giving up (%s): %s", u.String(), err)
 		}
@@ -165,6 +196,7 @@ func (c *client) selectCrecheType(activity string) {
 			fmt.Println("Posted activity to", u.String())
 			break
 		}
+		log.Printf("Failed attempt at %s. StatusCode %d, error: %s", u.Path, res.StatusCode, err)
 		if attempt >= maxRetries {
 			log.Fatalf("Too many failed attempts, giving up (%s): %s", u.String(), err)
 		}
@@ -187,6 +219,7 @@ func (c *client) getTimetableHTML() (*goquery.Document, error) {
 			fmt.Println("Posted Timetable button to", u.String())
 			break
 		}
+		log.Printf("Failed attempt at %s. StatusCode %d, error: %s", u.Path, res.StatusCode, err)
 		if attempt >= maxRetries {
 			log.Fatalf("Too many failed attempts, giving up (%s): %s", u.String(), err)
 		}
@@ -206,6 +239,7 @@ func (c *client) getTimetableHTML() (*goquery.Document, error) {
 			fmt.Println("Got Timetable subdocument from", u.String())
 			break
 		}
+		log.Printf("Failed attempt at %s. StatusCode %d, error: %s", u.Path, res.StatusCode, err)
 		if attempt >= maxRetries {
 			log.Fatalf("Too many failed attempts, giving up (%s): %s", u.String(), err)
 		}
@@ -218,40 +252,50 @@ func (c *client) getTimetableHTML() (*goquery.Document, error) {
 func getSlotID(doc *goquery.Document) string {
 	// Extract slot ID from last slot (1130, two weeks from today)
 	// Find the slots
-	// wrapper := doc.Find(".sportsHallSlotWrapper").Each(func(i int, s *goquery.Selection) {
-	// 	if s.Is
-	// wrapper.Find(".sporthallSlot")
-	// 	// For each slot div, get the time and the slotId
-	// 	datetime
-	// 	band := s.Find("a").Text()
-	// 	title := s.Find("i").Text()
-	// 	fmt.Printf("Review %d: %s - %s\n", i, band, title)
-	// })
-	// Depth-first search, from bottom to top of doc
-	var getSlot func(*html.Node) string
-	getSlot = func(n *html.Node) string {
-		if n.Type == html.ElementNode && n.Data == "a" {
-			for _, a := range n.Attr {
-				// find <a id='slot5926337' class='sporthallSlotAddLink' href='#' onclick='addSportsHallBooking(5926337); return false;' class='addLink'>
-				if a.Key == "id" {
-					if strings.HasPrefix(a.Val, "slot") {
-						fmt.Println("Found booking slot", a.Val)
-						return strings.TrimPrefix(a.Val, "slot")
+	targetDate := time.Now().UTC().AddDate(0, 0, 14)
+	// For targeting an arbirtrary date
+	// TODO: Paramaterize target date and time
+	// targetDate, _ := time.Parse("Monday 2 January 2006", "Monday 15 July 2019")
+	fmt.Println("Looking for slots on", targetDate.Format("Monday 2 January 2006"))
+	targetTime := "11:30"
+	slotDate := time.Time{}
+	slotID := ""
+	doc.Find(".sportsHallSlotWrapper").Children().EachWithBreak(func(i int, s *goquery.Selection) bool {
+		// For each slot div, get the time and the slotId
+		// Mon Jan 2 15:04:05 -0700 MST 2006
+		// Monday 15 July 2019
+		if s.Is(".sporthallSlot") {
+			if slotDate.YearDay() == targetDate.YearDay() && slotDate.Year() == targetDate.Year() {
+				text := strings.TrimSpace(s.Text())
+				if strings.Contains(text, targetTime) {
+					link := s.Find(".sporthallSlotAddLink")
+					if id, ok := link.Attr("id"); ok {
+						slotID = strings.TrimPrefix(id, "slot")
+						log.Println("Found slot id for date:", slotDate.Format("Mon 2 Jan 2006"), text, slotID)
+						return false
 					}
-					break
+					fmt.Println("Unable to find slot id for date:", slotDate.Format("Mon 2 Jan 2006"), s.Text())
+					return true
 				}
+				fmt.Println("Wrong time, skip this slot:", slotDate.Format("Mon 2 Jan 2006"), s.Text())
+				return true
+			}
+			fmt.Println("Wrong date, skip this slot:", slotDate.Format("Mon 2 Jan 2006"), s.Text())
+			return true
+		} else {
+			text := strings.TrimSpace(s.Text())
+			var err error
+			slotDate, err = time.Parse("Monday 2 January 2006", text)
+			if err != nil {
+				log.Println("Can't parse date string from timetable: ", text)
+				slotDate = time.Time{}
+			} else {
+				fmt.Println("Next slots are for date:", slotDate.Format("Mon 2 Jan 2006"))
 			}
 		}
-		for c := n.LastChild; c != nil; c = c.PrevSibling {
-			// If the target is found, unravel the recursion
-			if r := getSlot(c); r != "" {
-				return r
-			}
-		}
-		return ""
-	}
-	// return getSlot(doc), nil
-	return ""
+		return true
+	})
+	return slotID
 }
 
 func (c *client) addBooking() {
@@ -268,22 +312,16 @@ func (c *client) addBooking() {
 	// Click to select booking calls addSportsHallBooking(bookingID): line 150
 	// addSportsHallBooking() sets selectedCourts to empty string if selectedCourts
 	// is not provided as second parameter, as in this case
-	selectedCourts := ""
-	ajax := fmt.Sprintf("%.16f", rand.Float64()) // js NUMBER ~= float64
+	// selectedCourts := ""
 	// slotID := "5641294"                          //should just be able to use final booking
 	// addSportsHallBooking() then calls addBooking(id, url)
 	// addBooking(id, "AddSportsHallBooking?slotId=" + id + "&selectedCourts=" + selectedCourts);
 	// AddSportsHallBooking?slotId=5857026&selectedCourts=&ajax=0.2919207756868989
 	// build the url
-	bookingURL := url.URL{}
-	bookingURL.Scheme = "https"
-	bookingURL.Host = "better.legendonlineservices.co.uk"
-	bookingURL.Path = "/east_greenwich/BookingsCentre/AddSportsHallBooking"
-	q := bookingURL.Query()
-	q.Set("slotId", slotID)
-	q.Set("selectedCourts", selectedCourts)
-	q.Set("ajax", ajax)
-	bookingURL.RawQuery = q.Encode()
+	// bookingURL := url.URL{}
+	// bookingURL.Scheme = "https"
+	// bookingURL.Host = "better.legendonlineservices.co.uk"
+	// bookingURL.Path = "/east_greenwich/BookingsCentre/AddSportsHallBooking"
 	// addBooking(id, url) starts at line 109 of BookinAjax.js
 	// need to find how to locaate correct link to use, because I dont
 	// notice an obvious generation scheme for booking IDs.
@@ -292,17 +330,28 @@ func (c *client) addBooking() {
 	// params: slotId	5641294
 	//   selectedCourts
 	//   ajax	0.09610071300889433	---> from math.random, wonder what this does?
+	u, err := url.Parse("https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/AddSportsHallBooking")
+	if err != nil {
+		log.Fatalf("Failed to parse url (%s): %s", u.String(), err)
+	}
 
 	var res *http.Response
 	for attempt := 1; attempt <= maxRetries; attempt++ {
-		fmt.Println("Requesting to add booking to", bookingURL.String())
-		res, err = c.Get(bookingURL.String())
+		fmt.Println("Requesting to add booking to", u.String())
+		ajax := fmt.Sprintf("%.16f", rand.Float64()) // js NUMBER ~= float64
+		q := u.Query()
+		q.Set("slotId", slotID)
+		q.Set("selectedCourts", "")
+		q.Set("ajax", ajax)
+		u.RawQuery = q.Encode()
+		res, err = c.Get(u.String())
 		if err == nil && res.StatusCode == 200 {
-			fmt.Println("Added booking:", bookingURL.String())
+			fmt.Println("Added booking:", u.String())
 			break
 		}
+		log.Printf("Failed attempt at %s. StatusCode %d, error: %s", u.Path, res.StatusCode, err)
 		if attempt >= maxRetries {
-			log.Fatalf("Too many failed attempts, giving up (%s): %s", bookingURL.String(), err)
+			log.Fatalf("Too many failed attempts, giving up (%s): %s", u.String(), err)
 		}
 	}
 	defer res.Body.Close()
@@ -340,46 +389,36 @@ func (c *client) applyVoucher() {
 			fmt.Println("Got Basket from", uBasket.String())
 			break
 		}
+		log.Printf("Failed attempt at %s. StatusCode %d, error: %s", uBasket.Path, res.StatusCode, err)
 		if attempt >= maxRetries {
 			log.Fatalf("Too many failed attempts, giving up (%s): %s", uBasket.String(), err)
 		}
 	}
 
 	// Find Voucher button/id/href
+	voucherPath := ""
 	defer res.Body.Close()
-	doc, err := html.Parse(res.Body)
+	doc, err := goquery.NewDocumentFromReader(res.Body)
 	if err != nil {
 		log.Fatalf("Failed to parse html from basket: %s", err)
 	}
-
-	// Depth-first search, from bottom to top of doc
-	var getVoucher func(*html.Node) string
-	getVoucher = func(n *html.Node) string {
-		if n.Type == html.ElementNode && n.Data == "a" {
-			for _, a := range n.Attr {
-				if a.Key == "href" {
-					// looking for href = "/east_greenwich/Basket/AllocateBookingCredit?reservationId=49600430"
-					if strings.Contains(a.Val, "AllocateBookingCredit") {
-						fmt.Println("Found Voucher link to", a.Val)
-						return a.Val
-					}
-					break
-				}
+	doc.Find(".basketItem").Find("a").EachWithBreak(func(i int, s *goquery.Selection) bool {
+		text := s.Text()
+		if strings.Contains(text, "Use Voucher") {
+			var ok bool
+			voucherPath, ok = s.Attr("href")
+			if ok {
+				fmt.Println("Found Voucher link:", voucherPath)
+				return false
 			}
+			log.Println("Can't find href in Voucher link")
 		}
-		for c := n.LastChild; c != nil; c = c.PrevSibling {
-			// If the target is found, unravel the recursion
-			if r := getVoucher(c); r != "" {
-				return r
-			}
-		}
-		return ""
-	}
-	uVoucherPath := getVoucher(doc)
+		return true
+	})
 
 	// Apply Voucher
 	// https://better.legendonlineservices.co.uk/east_greenwich/Basket/AllocateBookingCredit?reservationId=49600430
-	uVoucher, err := url.Parse("https://better.legendonlineservices.co.uk" + uVoucherPath)
+	uVoucher, err := url.Parse("https://better.legendonlineservices.co.uk" + voucherPath)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -391,6 +430,7 @@ func (c *client) applyVoucher() {
 			fmt.Println("Applied Voucher at", uVoucher.String())
 			break
 		}
+		log.Printf("Failed attempt at %s. StatusCode %d, error: %s", uVoucher.Path, res.StatusCode, err)
 		if attempt >= maxRetries {
 			log.Fatalf("Too many failed attempts, giving up (%s): %s", uVoucher.String(), err)
 		}
@@ -413,6 +453,7 @@ func (c *client) complete() {
 			fmt.Println("Completed Transaction!!", uPay.String())
 			break
 		}
+		log.Printf("Failed attempt at %s. StatusCode %d, error: %s", uPay.Path, res.StatusCode, err)
 		if attempt >= maxRetries {
 			log.Fatalf("Too many failed attempts, giving up (%s): %s", uPay.String(), err)
 		}
