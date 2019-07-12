@@ -46,6 +46,8 @@ func main() {
 		log.Fatalln("Not enough arguments (eg email and pass): ", flag.Args())
 	}
 
+	log.Println("BEGIN creche bot")
+
 	user := flag.Arg(0)
 	pass := flag.Arg(1)
 
@@ -68,6 +70,8 @@ func main() {
 	c.addBooking()
 	c.applyVoucher()
 	c.complete()
+
+	log.Println("END creche bot without failures")
 }
 
 func newClient() *client {
@@ -416,6 +420,10 @@ func (c *client) applyVoucher() {
 		}
 		return true
 	})
+
+	if len(voucherPath) < 1 {
+		log.Fatalln("Failed to find voucher path, abandonind booking")
+	}
 
 	// Apply Voucher
 	// https://better.legendonlineservices.co.uk/east_greenwich/Basket/AllocateBookingCredit?reservationId=49600430
