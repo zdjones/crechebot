@@ -36,7 +36,9 @@ func main() {
 	// 	log.Fatalln("Not enough arguments (eg email and pass): ", os.Args)
 	// }
 	var under2s bool
+	var early bool
 	flag.BoolVar(&under2s, "under2", false, "Book for Under 2s (default is Over 2s)")
+	flag.BoolVar(&early, "early", false, "Book for 930 (default is 1130)")
 	// long := flag.String("l", flag.Args[1], "long url")
 	// short := flag.String("s", flag.Args[1], "short url")
 	// addr := flag.String("api", flag.Args[2], "API endpoint")
@@ -46,7 +48,7 @@ func main() {
 		log.Fatalln("Not enough arguments (eg email and pass): ", flag.Args())
 	}
 
-	log.Println("BEGIN creche bot")
+	log.Println("BEGIN creche bot at", time.Now().Format(time.RFC822))
 
 	user := flag.Arg(0)
 	pass := flag.Arg(1)
@@ -67,7 +69,7 @@ func main() {
 	c.selectCentre()
 	c.selectActivityCreche()
 	c.selectCrecheType(crecheType)
-	c.addBooking()
+	c.addBooking(early)
 	c.applyVoucher()
 	c.complete()
 
@@ -254,7 +256,7 @@ func (c *client) getTimetableHTML() (*goquery.Document, error) {
 	return goquery.NewDocumentFromReader(res.Body)
 }
 
-func getSlotID(doc *goquery.Document) string {
+func getSlotID(doc *goquery.Document, early bool) string {
 	// Extract slot ID from last slot (1130, two weeks from today)
 	// Find the slots
 	targetDate := time.Now().UTC().AddDate(0, 0, 14)
@@ -262,7 +264,14 @@ func getSlotID(doc *goquery.Document) string {
 	// TODO: Paramaterize target date and time
 	// targetDate, _ := time.Parse("Monday 2 January 2006", "Monday 15 July 2019")
 	fmt.Println("Looking for slots on", targetDate.Format("Monday 2 January 2006"))
-	targetTime := "11:30"
+
+	var targetTime string
+	switch early {
+	case true:
+		targetTime = "9:30"
+	case false:
+		targetTime = "11:30"
+	}
 	slotDate := time.Time{}
 	slotID := ""
 	doc.Find(".sportsHallSlotWrapper").Children().EachWithBreak(func(i int, s *goquery.Selection) bool {
@@ -303,13 +312,13 @@ func getSlotID(doc *goquery.Document) string {
 	return slotID
 }
 
-func (c *client) addBooking() {
+func (c *client) addBooking(early bool) {
 	doc, err := c.getTimetableHTML()
 	if err != nil {
 		log.Fatalf("Bad timetable HTML: %s", err)
 	}
 
-	slotID := getSlotID(doc)
+	slotID := getSlotID(doc, early)
 	if len(slotID) < 1 {
 		log.Fatalf("Failed to find slotID")
 	}
@@ -350,7 +359,24 @@ func (c *client) addBooking() {
 		q.Set("ajax", ajax)
 		u.RawQuery = q.Encode()
 		res, err = c.Get(u.String())
-		if err == nil && res.StatusCode == 200 {
+		defer res.Body.Close()
+		body, err := ioutil.ReadAll(res.Body)
+		if err != nil {
+			log.Printf("Failed to read addBooking response body: %s", err)
+		}
+		fmt.Println("Recieved json:", string(body))
+
+		// TODO: get more data from json resonse
+		//		1. unix nanoseconds describing the slot start/end
+		//			can be used to check correctness before finishing
+		data := struct{ Success bool }{false} // anonymous struct for one-off use
+		err = json.Unmarshal(body, &data)
+		if err != nil {
+			log.Printf("Failed to parse booking response json")
+		}
+
+		fmt.Println("Booking added to basket =", data.Success)
+		if err == nil && res.StatusCode == 200 && data.Success {
 			fmt.Println("Added booking:", u.String())
 			break
 		}
@@ -358,24 +384,9 @@ func (c *client) addBooking() {
 		if attempt >= maxRetries {
 			log.Fatalf("Too many failed attempts, giving up (%s): %s", u.String(), err)
 		}
+		// sleep longer after each attempt
+		time.Sleep(time.Duration(attempt) * 5 * time.Second)
 	}
-	defer res.Body.Close()
-	body, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		log.Fatalf("Failed to read addBooking response body: %s", err)
-	}
-	fmt.Println("Recieved json:", string(body))
-
-	// TODO: get more data from json resonse
-	//		1. unix nanoseconds describing the slot start/end
-	//			can be used to check correctness before finishing
-	data := struct{ Success bool }{false} // anonymous struct for one-off use
-	err = json.Unmarshal(body, &data)
-	if err != nil {
-		log.Printf("Failed to parse booking response json")
-	}
-
-	fmt.Println("Booking added to basket =", data.Success)
 }
 
 func (c *client) applyVoucher() {
