@@ -69,7 +69,17 @@ func main() {
 	c.selectCentre()
 	c.selectActivityCreche()
 	c.selectCrecheType(crecheType)
-	c.addBooking(early)
+	for attempt := 1; attempt <= maxRetries; attempt++ {
+		err := c.addBooking(early)
+		if err != nil {
+			log.Printf("addBooking failed attempt %d: %s", attempt, err)
+			rest := time.Duration(attempt*attempt) * 5 * time.Second
+			log.Printf("Sleeping %s...", rest.String())
+			time.Sleep(rest)
+			continue
+		}
+		log.Printf("addBooking success, attempt %d", attempt)
+	}
 	c.applyVoucher()
 	c.complete()
 
@@ -102,7 +112,9 @@ func (c *client) login(user, pass string) {
 			break
 		}
 		log.Printf("Failed attempt at %s. StatusCode %d, error: %s\n", u.Path, res.StatusCode, err)
-		time.Sleep(5 * time.Second)
+		rest := time.Duration(attempt) * 5 * time.Second
+		log.Printf("Sleeping %s...", rest.String())
+		time.Sleep(rest)
 		if attempt >= maxRetries {
 			log.Fatalf("Too many failed attempts, giving up (%s): %s", u.String(), err)
 		}
@@ -312,15 +324,15 @@ func getSlotID(doc *goquery.Document, early bool) string {
 	return slotID
 }
 
-func (c *client) addBooking(early bool) {
+func (c *client) addBooking(early bool) error {
 	doc, err := c.getTimetableHTML()
 	if err != nil {
-		log.Fatalf("Bad timetable HTML: %s", err)
+		return fmt.Errorf("Bad timetable HTML", err)
 	}
 
 	slotID := getSlotID(doc, early)
 	if len(slotID) < 1 {
-		log.Fatalf("Failed to find slotID")
+		return fmt.Errorf("Failed to find slotID")
 	}
 	// for selecting a booking, see BookingAjax.js
 	// Click to select booking calls addSportsHallBooking(bookingID): line 150
@@ -346,7 +358,7 @@ func (c *client) addBooking(early bool) {
 	//   ajax	0.09610071300889433	---> from math.random, wonder what this does?
 	u, err := url.Parse("https://better.legendonlineservices.co.uk/east_greenwich/BookingsCentre/AddSportsHallBooking")
 	if err != nil {
-		log.Fatalf("Failed to parse url (%s): %s", u.String(), err)
+		return fmt.Errorf("Failed to parse url (%s): %s", u.String(), err)
 	}
 
 	var res *http.Response
@@ -362,7 +374,7 @@ func (c *client) addBooking(early bool) {
 		defer res.Body.Close()
 		body, err := ioutil.ReadAll(res.Body)
 		if err != nil {
-			log.Printf("Failed to read addBooking response body: %s", err)
+			return fmt.Errorf("Failed to read addBooking response body: %s", err)
 		}
 		fmt.Println("Recieved json:", string(body))
 
@@ -372,21 +384,21 @@ func (c *client) addBooking(early bool) {
 		data := struct{ Success bool }{false} // anonymous struct for one-off use
 		err = json.Unmarshal(body, &data)
 		if err != nil {
-			log.Printf("Failed to parse booking response json")
+			return fmt.Errorf("Failed to parse booking response json")
 		}
 
 		fmt.Println("Booking added to basket =", data.Success)
 		if err == nil && res.StatusCode == 200 && data.Success {
 			fmt.Println("Added booking:", u.String())
-			break
+			return nil
 		}
 		log.Printf("Failed attempt at %s. StatusCode %d, error: %s", u.Path, res.StatusCode, err)
-		if attempt >= maxRetries {
-			log.Fatalf("Too many failed attempts, giving up (%s): %s", u.String(), err)
-		}
 		// sleep longer after each attempt
-		time.Sleep(time.Duration(attempt) * 5 * time.Second)
+		rest := time.Duration(attempt) * 5 * time.Second
+		log.Printf("Sleeping %s...", rest.String())
+		time.Sleep(rest)
 	}
+	return fmt.Errorf("Too many failed attempts, giving up (%s): %s", u.String(), err)
 }
 
 func (c *client) applyVoucher() {
