@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"net/http/cookiejar"
 	"net/url"
+	"os"
 	"strings"
 	"time"
 
@@ -69,17 +70,13 @@ func main() {
 	c.selectCentre()
 	c.selectActivityCreche()
 	c.selectCrecheType(crecheType)
-	for attempt := 1; attempt <= maxRetries; attempt++ {
-		err := c.addBooking(early)
-		if err != nil {
-			log.Printf("addBooking failed attempt %d: %s", attempt, err)
-			rest := time.Duration(attempt*attempt) * 5 * time.Second
-			log.Printf("Sleeping %s...", rest.String())
-			time.Sleep(rest)
-			continue
-		}
-		log.Printf("addBooking success, attempt %d", attempt)
+
+	err := c.addBooking(early)
+	if err != nil {
+		log.Printf("addBooking failed: %s", err)
+		os.Exit(1)
 	}
+	log.Println("addBooking success")
 	c.applyVoucher()
 	c.complete()
 
@@ -112,7 +109,7 @@ func (c *client) login(user, pass string) {
 			break
 		}
 		log.Printf("Failed attempt at %s. StatusCode %d, error: %s\n", u.Path, res.StatusCode, err)
-		rest := time.Duration(attempt) * 5 * time.Second
+		rest := time.Duration(attempt*attempt) * 5 * time.Second
 		log.Printf("Sleeping %s...", rest.String())
 		time.Sleep(rest)
 		if attempt >= maxRetries {
@@ -327,9 +324,8 @@ func getSlotID(doc *goquery.Document, early bool) string {
 func (c *client) addBooking(early bool) error {
 	doc, err := c.getTimetableHTML()
 	if err != nil {
-		return fmt.Errorf("Bad timetable HTML", err)
+		return fmt.Errorf("Bad timetable HTML: %s", err)
 	}
-
 	slotID := getSlotID(doc, early)
 	if len(slotID) < 1 {
 		return fmt.Errorf("Failed to find slotID")
@@ -360,6 +356,10 @@ func (c *client) addBooking(early bool) error {
 	if err != nil {
 		return fmt.Errorf("Failed to parse url (%s): %s", u.String(), err)
 	}
+	now := time.Now()
+	ten := time.Date(now.Year(), now.Month(), now.Day(), 22, 0, 0, 0, now.Location())
+	log.Printf("Waiting until %s", ten)
+	time.Sleep(time.Until(ten))
 
 	var res *http.Response
 	for attempt := 1; attempt <= maxRetries; attempt++ {
@@ -394,7 +394,7 @@ func (c *client) addBooking(early bool) error {
 		}
 		log.Printf("Failed attempt at %s. StatusCode %d, error: %s", u.Path, res.StatusCode, err)
 		// sleep longer after each attempt
-		rest := time.Duration(attempt) * 5 * time.Second
+		rest := time.Duration(attempt*attempt) * 5 * time.Second
 		log.Printf("Sleeping %s...", rest.String())
 		time.Sleep(rest)
 	}
